@@ -14,32 +14,7 @@ export default function CompanyListScreen() {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>Aziende</Text>
-            <Autocomplete
-                inputProps={{ id: 'states-autocomplete' }}
-                wrapperStyle={{ position: 'relative', display: 'inline-block' }}
-                value={selectedCompany}
-                items={filteredOptions}
-                getItemValue={(item) => item.name}
-                onSelect={(value, item) => {
-                    setSelectedCompany(item);
-                    //todo: navigate to company details
-                }}
-                onChange={(event, value) => {
-                    setFilteredOptions(db.getCompaniesBySearchFilter(value))
-                }}
-                renderMenu={children => (
-                    <div className="menu">
-                        {children}
-                    </div>
-                )}
-                renderItem={(item, isHighlighted) => (
-                    <div
-                        className={`item ${isHighlighted ? 'item-highlighted' : ''}`}
-                        key={item.abbr}
-                    >{item.name}</div>
-                )}
-            />
+            <Text style={styles.title}>Viva la maionese</Text>
         </View>
     );
 }
