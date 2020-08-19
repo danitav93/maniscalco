@@ -1,25 +1,12 @@
-import {Actions} from "../action";
+import {combineReducers} from "redux";
+import {companyListReducer} from "./companiesList";
+import {exampleReducer} from "./example";
 
+const rootReducer = combineReducers({
+    companies: companyListReducer,
+    example: exampleReducer
+});
 
-const initialState = {
-    example: 0
-};
-
-export type ReduxState = typeof initialState
-
-
-interface ExampleAction {
-    type: Actions.userPressedButton;
-}
-
-function rootReducer(state = initialState, action: ExampleAction): ReduxState {
-    switch (action.type) {
-        case Actions.userPressedButton:
-            return {
-                example: state.example + 1
-            }
-        default: return state
-    }
-};
+export type ReduxState = ReturnType<typeof rootReducer>
 
 export default rootReducer;
