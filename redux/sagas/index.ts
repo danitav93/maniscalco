@@ -1,14 +1,10 @@
 import { call, put, takeLatest } from 'redux-saga/effects'
-import {Actions, companiesLoaded, UserPressedButton2} from "../action";
+import {Actions, filteredCompaniesLoaded, UserChangedSearchCompanyFilter} from "../action";
 import {db} from "../../dbApi";
 
-function* dbSagaExample(action: UserPressedButton2) {
-    try {
-        const companies = yield call( db.getCompaniesBySearchFilter, 'ghjghj');
-        yield put(companiesLoaded(companies));
-    } catch (e) {
-        yield put({type: "USER_FETCH_FAILED", message: e.message});
-    }
+function* dbSagaExample(action: UserChangedSearchCompanyFilter) {
+    const companies = yield call( db.getCompaniesBySearchFilter, action.payload);
+    yield put(filteredCompaniesLoaded(companies));
 }
 
 /*
@@ -19,7 +15,7 @@ function* dbSagaExample(action: UserPressedButton2) {
   and only the latest one will be run.
 */
 function* mySagaExample() {
-    yield takeLatest(Actions.userPressedButton2, dbSagaExample);
+    yield takeLatest(Actions.userChangedSearchCompanyFilter, dbSagaExample);
 }
 
 export default mySagaExample;

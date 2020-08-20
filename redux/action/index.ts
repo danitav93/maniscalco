@@ -1,12 +1,12 @@
 import {Company} from "../../dbApi";
 
-function makeActionCreator(type: string) {
+function makeAction(type: string) {
     return function () {
         return { type }
     }
 }
 
-function makeTypedActionCreator<T>(type: string) {
+function makeTypedAction<T>(type: string) {
     return function (payload: T) {
         return { type, payload }
     }
@@ -14,16 +14,12 @@ function makeTypedActionCreator<T>(type: string) {
 
 
 export enum Actions {
-    userPressedButton = 'userPressedButton',
-    userPressedButton2 = 'userPressedButton2',
-    companiesLoaded = 'companiesLoaded',
+    filteredCompaniesLoaded = 'filteredCompaniesLoaded',
+    userChangedSearchCompanyFilter = 'userChangedSearchCompanyFilter',
 }
 
-export const userPressedButton = makeActionCreator(Actions.userPressedButton);
-export type UserPressedButton = ReturnType<typeof userPressedButton>;
+export const filteredCompaniesLoaded = makeTypedAction<Company[]>(Actions.filteredCompaniesLoaded);
+export type FilteredCompaniesLoaded = ReturnType<typeof filteredCompaniesLoaded>;
 
-export const userPressedButton2 = makeActionCreator(Actions.userPressedButton2);
-export type UserPressedButton2 = ReturnType<typeof userPressedButton2>;
-
-export const companiesLoaded = makeTypedActionCreator<Company[]>(Actions.companiesLoaded);
-export type CompaniesLoaded = ReturnType<typeof companiesLoaded>;
+export const userChangedSearchCompanyFilter = makeTypedAction<string>(Actions.userChangedSearchCompanyFilter);
+export type UserChangedSearchCompanyFilter = ReturnType<typeof userChangedSearchCompanyFilter>;
