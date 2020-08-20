@@ -34,7 +34,7 @@ const CompanyListScreen: FC = () => {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>Viva la {example}</Text>
+            <Text style={styles.title}>Danieeeel{example}</Text>
             <Button title={"Toccami"} onPress={onPressButton}/>
             <Button title={"Toccami2"} onPress={onPressButton2}/>
             <Text style={styles.title}>{companies.length}</Text>
