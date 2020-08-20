@@ -1,10 +1,8 @@
 import {combineReducers} from "redux";
-import {companyListReducer} from "./companiesList";
-import {exampleReducer} from "./example";
+import companyReducer from "./company";
 
 const rootReducer = combineReducers({
-    companies: companyListReducer,
-    example: exampleReducer
+    companies: companyReducer,
 });
 
 export type ReduxState = ReturnType<typeof rootReducer>

@@ -23,11 +23,6 @@ export interface UpdateSessionInput extends CreateSessionInput {
     sessionId: string;
 }
 
-export interface CompanyItem {
-    companyId: string;
-    name: string;
-}
-
 export interface Company {
     companyId: string;
     name: string;
@@ -138,12 +133,23 @@ class Db {
         // todo: implement updateCompany
     }
 
-    getCompaniesBySearchFilter = (searchStr: string): CompanyItem[] => {
+    getCompaniesBySearchFilter = (searchStr: string): Company[] => {
         // todo: return list by filter
-        return [{
+        const company1: Company = {
             companyId: 'id1',
-            name: 'Pippo er magnone',
-        }];
+            name: 'Paolo e gina vacche',
+            email: 'azionda@maniscalco.it',
+            phoneNumber: '3278788372',
+        };
+
+        const company2: Company = {
+            companyId: 'id2',
+            name: 'Federico pavoni',
+            email: 'federico@maniscalco.it',
+            phoneNumber: '333 3422459',
+        };
+
+        return [company1, company2].filter(company => company.name.indexOf(searchStr) === 0);
     }
 
     getCompanyById = (id: string): Company => {
