@@ -1,29 +1,41 @@
 import {Company, Session} from "../../dbApi";
 
-function makeAction(type: string) {
+
+function makeAction(type: string, isLoading?: boolean) {
     return function () {
-        return { type }
+        return { type, isLoading }
     }
 }
 
-function makeTypedAction<T>(type: string) {
+function makePayloadAction<T>(type: string, isLoading?: boolean) {
     return function (payload: T) {
-        return { type, payload }
+        return { type, payload, isLoading }
     }
 }
-
 
 export enum Actions {
     filteredCompaniesLoaded = 'filteredCompaniesLoaded',
     companyDetailLoaded = 'companyDetailLoaded',
-    companySessionsLoaded = 'companySessionsLoaded'
+    companySessionsLoaded = 'companySessionsLoaded',
+    companyNameAlreadyExists = 'companyNameAlreadyExists',
+    clearErrors = 'clearErrors',
+    genericError = 'genericError',
 }
 
-export const filteredCompaniesLoaded = makeTypedAction<Company[]>(Actions.filteredCompaniesLoaded);
+export const filteredCompaniesLoaded = makePayloadAction<Company[]>(Actions.filteredCompaniesLoaded, false);
 export type FilteredCompaniesLoaded = ReturnType<typeof filteredCompaniesLoaded>;
 
-export const companyDetailLoaded = makeTypedAction<Company>(Actions.companyDetailLoaded);
+export const companyDetailLoaded = makePayloadAction<Company>(Actions.companyDetailLoaded, false);
 export type CompanyDetailLoaded = ReturnType<typeof companyDetailLoaded>;
 
-export const companySessionsLoaded = makeTypedAction<Session[]>(Actions.companySessionsLoaded);
+export const companySessionsLoaded = makePayloadAction<Session[]>(Actions.companySessionsLoaded, false);
 export type CompanySessionsLoaded = ReturnType<typeof companySessionsLoaded>;
+
+export const companyNameAlreadyExists = makeAction(Actions.companyNameAlreadyExists, false);
+export type CompanyNameAlreadyExists = ReturnType<typeof companyNameAlreadyExists>;
+
+export const clearErrors = makeAction(Actions.clearErrors, false);
+export type ClearErrors = ReturnType<typeof clearErrors>;
+
+export const genericError = makeAction(Actions.genericError, false);
+export type GenericError = ReturnType<typeof genericError>;

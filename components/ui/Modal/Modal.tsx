@@ -4,15 +4,12 @@ import {StyleSheet, Text, View} from "react-native";
 
 interface Props {
     isOpen: boolean;
-    onPressClose: () => void;
 }
 
-export const Modal: FC<Props> = ({isOpen, onPressClose, children}) => {
+export const Modal: FC<Props> = ({isOpen, children}) => {
 
     return (
-        <Overlay isVisible={isOpen} onBackdropPress={() => {
-            onPressClose()
-        }} overlayStyle={styles.overlay}>
+        <Overlay isVisible={isOpen} overlayStyle={styles.overlay}>
             {children}
         </Overlay>);
 

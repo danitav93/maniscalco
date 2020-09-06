@@ -3,22 +3,21 @@ import React, {FC, useCallback, useMemo, useState} from "react";
 import {Company} from "../dbApi";
 import {ReduxState} from "../redux/reducer";
 import {useDispatch, useSelector} from "react-redux";
-import {userChangedSearchCompanyFilter} from "../redux/action";
 import {useNavigation} from '@react-navigation/native';
 import {Button, Card, Icon, ListItem, Text, withTheme} from 'react-native-elements';
 import {Autocomplete} from "../components/ui/Autocomplete";
 import CreateCompanyForm from "../components/company/CreateCompanyForm";
 import {Modal} from "../components/ui/Modal/Modal";
 import {ModalHeader} from "../components/ui/Modal/ModalHeader";
-import {ModalFooter} from "../components/ui/Modal/ModalFooter";
 import {ModalBody} from "../components/ui/Modal/ModalBody";
 import {CancelModalFooterButton} from "../components/ui/Modal/CancelModalFooterButton";
 import {SubmitModalFooterButton} from "../components/ui/Modal/SubmitModalButton";
 import {useModal} from "../hooks/useModal";
 import {FormProvider, useForm} from "react-hook-form";
-import { yupResolver } from '@hookform/resolvers';
-import {companySchema, CompanySchemaType} from "../schemas/company";
-
+import {yupResolver} from '@hookform/resolvers';
+import {companySchema} from "../schemas/company";
+import {userChangedSearchCompanyFilter, userSubmittedNewCompany} from "../redux/events";
+import ModalFooter from "../components/ui/Modal/ModalFooter";
 
 
 const filteredCompaniesSelector = (state: ReduxState) => state.companies.filteredCompanies;
@@ -73,9 +72,9 @@ const CompanyListScreen: FC = (props) => {
         resolver: yupResolver(companySchema),
     });
 
-    const createCompany = useCallback((data)=>{
-        dispatch({type: 'createCompany', payload: data})
-    },[dispatch])
+    const createCompany = useCallback((data) => {
+        dispatch(userSubmittedNewCompany(data))
+    }, [dispatch])
 
 
     return (
@@ -111,7 +110,7 @@ const CompanyListScreen: FC = (props) => {
                         size={35}/>
                 </KeyboardAvoidingView>
             </View>
-            <Modal isOpen={isModalOpen} onPressClose={closeModal}>
+            <Modal isOpen={isModalOpen}>
                 <ModalHeader title={"Aggiungi una nuova azienda"}/>
                 <ModalBody>
                     <FormProvider {...methods} >

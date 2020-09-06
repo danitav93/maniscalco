@@ -12,11 +12,12 @@ export interface CompanyDetail {
     company: Company | undefined;
     sessions: Session[];
 }
+
 const initialCompanyDetailState: CompanyDetail = {
     company: undefined,
     sessions: [],
 }
-const companyDetail = (state = initialCompanyDetailState, action: CompanyDetailLoaded | ClearCompanyDetails | CompanySessionsLoaded): CompanyDetail => {
+const companyDetailReducer = (state = initialCompanyDetailState, action: CompanyDetailLoaded | ClearCompanyDetails | CompanySessionsLoaded): CompanyDetail => {
     switch (action.type) {
         case Actions.companyDetailLoaded:
             return {
@@ -30,21 +31,23 @@ const companyDetail = (state = initialCompanyDetailState, action: CompanyDetailL
                 ...state,
                 sessions: action.payload
             };
-        default: return state
+        default:
+            return state
     }
 }
 
-function filteredCompanies(state = [], action: FilteredCompaniesLoaded): Company[] {
+function filteredCompaniesReducer(state = [], action: FilteredCompaniesLoaded): Company[] {
     switch (action.type) {
         case Actions.filteredCompaniesLoaded:
             return action.payload
-        default: return state
+        default:
+            return state
     }
 }
 
 const companyReducer = combineReducers({
-    filteredCompanies,
-    companyDetail,
+    filteredCompanies: filteredCompaniesReducer,
+    companyDetail: companyDetailReducer,
 })
 
 

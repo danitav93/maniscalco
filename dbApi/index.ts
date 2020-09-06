@@ -1,11 +1,12 @@
 import * as SQLite from 'expo-sqlite';
+import {CompanyNameAlreadyExistsError} from "../errors/CompanyNameAlreadyExistsError";
 
 const sqlLite = SQLite.openDatabase("db.db");
 
 
-interface CreateCompanyInput {
+export interface CreateCompanyInput {
     name: string;
-    mail?: string;
+    email?: string;
     phone?: string;
 }
 
@@ -141,9 +142,10 @@ class Db {
      * @return companyId
      */
     createCompany = (company: CreateCompanyInput): string => {
+        //throw new CompanyNameAlreadyExistsError();
         // todo: return company id
         const argument = "";
-        sqlLite.transaction(
+        /*sqlLite.transaction(
             tx => {
                 tx.executeSql("insert into items (done, value) values (0, ?)", [argument]);
                 tx.executeSql("select * from items", [], (_, { rows }) =>
@@ -154,8 +156,8 @@ class Db {
                 // todo: choose right error
                 throw new Error();
             },
-        );
-        return "";
+        );*/
+        return "aooo";
     }
 
     updateCompany = (company: UpdateCompanyInput): void => {

@@ -18,5 +18,3 @@ export const companySchema = yup.object().shape({
     email: yup.string().email(),
     phone: yup.string().phone("IT", false, "Numero di telefono non valido")
 });
-
-export type CompanySchemaType = yup.InferType<typeof companySchema>
