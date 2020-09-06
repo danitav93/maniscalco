@@ -1,21 +1,35 @@
-import { call, put, takeLatest } from 'redux-saga/effects'
-import {Actions, filteredCompaniesLoaded, UserChangedSearchCompanyFilter} from "../action";
-import {db} from "../../dbApi";
+import { call, put, takeLatest, fork, all } from 'redux-saga/effects'
+import {
+    companyDetailLoaded, companySessionsLoaded,
+    filteredCompaniesLoaded,
+} from "../action";
+import {Company, db, Session} from "../../dbApi";
+import {Events, LoadCompanyDetails, UserChangedSearchCompanyFilter} from "../events";
 
-function* dbSagaExample(action: UserChangedSearchCompanyFilter) {
-    const companies = yield call( db.getCompaniesBySearchFilter, action.payload);
+function* loadFilteredCompaniesSaga(event: UserChangedSearchCompanyFilter) {
+    const companies = yield call( db.getCompaniesBySearchFilter, event.payload);
     yield put(filteredCompaniesLoaded(companies));
 }
 
-/*
-  Alternatively you may use takeLatest.
-
-  Does not allow concurrent fetches of user. If "USER_FETCH_REQUESTED" gets
-  dispatched while a fetch is already pending, that pending fetch is cancelled
-  and only the latest one will be run.
-*/
-function* mySagaExample() {
-    yield takeLatest(Actions.userChangedSearchCompanyFilter, dbSagaExample);
+function* watchLoadFilteredCompanies() {
+    yield takeLatest(Events.userChangedSearchCompanyFilter, loadFilteredCompaniesSaga);
 }
 
-export default mySagaExample;
+function* loadCompanyDetailSaga(event: LoadCompanyDetails) {
+    const [company, sessions]: [Company, Session[]] = yield all([call( db.getCompanyById, event.payload), call( db.getSessionsByCompanyId, event.payload)])
+    yield put(companyDetailLoaded(company));
+    yield put(companySessionsLoaded(sessions));
+}
+
+function* watchLoadCompanyDetail() {
+    yield takeLatest(Events.loadCompanyDetails, loadCompanyDetailSaga);
+}
+
+function* companiesSaga () {
+    yield fork(watchLoadFilteredCompanies);
+    yield fork(watchLoadCompanyDetail);
+}
+
+export function* rootSaga () {
+    yield fork(companiesSaga);
+}
