@@ -4,25 +4,12 @@ import React, {FC, useCallback, useState} from "react";
 import { Company } from "../dbApi";
 import { ReduxState } from "../redux/reducer";
 import { useDispatch, useSelector} from "react-redux";
-import { userChangedSearchCompanyFilter } from "../redux/action";
 import Autocomplete from "react-native-autocomplete-input";
 import { useNavigation } from '@react-navigation/native';
+import {userChangedSearchCompanyFilter} from "../redux/events";
 
 
 const filteredCompaniesSelector = (state: ReduxState) => state.companies.filteredCompanies;
-
-
-const Icon = () => <Text>fdsfds</Text>;
-
-const actions = [
-    {
-        text: "Accessibility",
-        icon: Icon,
-        name: "bt_accessibility",
-        position: 2
-    },
-];
-
 
 const CompanyListScreen: FC = () => {
 
@@ -46,7 +33,7 @@ const CompanyListScreen: FC = () => {
         dispatch(userChangedSearchCompanyFilter(value));
     },  []);
     const goToCompanyDetail = useCallback(()=>{
-        navigation.navigate('CompanyDetails');
+        navigation.navigate('CompanyDetails', { companyId: selectedCompany!.companyId });
     },[selectedCompany])
 
     const RenderItem = useCallback(({ item }: { item: Company }) => (

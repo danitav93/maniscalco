@@ -104,6 +104,35 @@ export enum Cure {
     // todo
 }
 
+//todo remove, these are just stub data
+const company1: Company = {
+    companyId: 'id1',
+    name: 'Paolo e gina vacche',
+    email: 'azionda@maniscalco.it',
+    phoneNumber: '3278788372',
+};
+const company2: Company = {
+    companyId: 'id2',
+    name: 'Federico pavoni',
+    email: 'federico@maniscalco.it',
+    phoneNumber: '333 3422459',
+};
+const session1: Session = {
+    date: '24/05/2020',
+    sessionId: 'id1',
+    price: '34'
+}
+const session2: Session = {
+    date: '12/09/2020',
+    sessionId: 'id2',
+    price: '33'
+}
+const session3: Session = {
+    date: '01/12/2021',
+    sessionId: 'id3',
+    price: '32'
+}
+
 class Db {
 
     /**
@@ -135,31 +164,12 @@ class Db {
 
     getCompaniesBySearchFilter = (searchStr: string): Company[] => {
         // todo: return list by filter
-        const company1: Company = {
-            companyId: 'id1',
-            name: 'Paolo e gina vacche',
-            email: 'azionda@maniscalco.it',
-            phoneNumber: '3278788372',
-        };
-
-        const company2: Company = {
-            companyId: 'id2',
-            name: 'Federico pavoni',
-            email: 'federico@maniscalco.it',
-            phoneNumber: '333 3422459',
-        };
-
         return [company1, company2].filter(company => company.name.indexOf(searchStr) === 0);
     }
 
     getCompanyById = (id: string): Company => {
         //todo return companyDetails by id
-        return {
-            companyId: '',
-            email: '',
-            name: '',
-            phoneNumber: ''
-        }
+        return company1
     }
 
     createSession = (session: CreateSessionInput): string => {
@@ -173,7 +183,7 @@ class Db {
 
     getSessionsByCompanyId = (companyId: string): SessionItem[] => {
         // todo
-        return [];
+        return [session1, session2, session3];
     }
 
     getSessionById = (sessionId: string): Session => {
