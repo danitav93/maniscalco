@@ -2,6 +2,7 @@ import {Events, LoadCompanyDetails, UserChangedSearchCompanyFilter, UserSubmitte
 import {all, call, fork, put, takeLatest, delay} from "redux-saga/effects";
 import {Company, db, Session} from "../../dbApi";
 import {
+    closeModal,
     companyDetailLoaded,
     companyNameAlreadyExists,
     companySessionsLoaded,
@@ -9,7 +10,7 @@ import {
     genericError
 } from "../action";
 import {CompanyNameAlreadyExistsError} from "../../errors/CompanyNameAlreadyExistsError";
-import * as NavigationService from '../../navigation/NavigationService'
+import {NavigationHandler} from "../../navigation/NavigationService";
 
 
 function* loadFilteredCompaniesSaga(event: UserChangedSearchCompanyFilter) {
@@ -23,6 +24,7 @@ function* watchLoadFilteredCompanies() {
 
 function* loadCompanyDetailSaga(event: LoadCompanyDetails) {
     const [company, sessions]: [Company, Session[]] = yield all([call(db.getCompanyById, event.payload), call(db.getSessionsByCompanyId, event.payload)])
+    yield delay(2000);
     yield put(companyDetailLoaded(company));
     yield put(companySessionsLoaded(sessions));
 }
@@ -34,7 +36,8 @@ function* watchLoadCompanyDetail() {
 function* createCompanySaga(event: UserSubmittedNewCompany) {
     try {
         const companyId = yield call(db.createCompany, event.payload);
-        NavigationService.navigate('CompanyDetails',{ companyId} );
+        yield put(closeModal());
+        NavigationHandler.navigateToCompanyDetails(companyId)
     } catch (error) {
         if (error instanceof CompanyNameAlreadyExistsError) {
             yield put(companyNameAlreadyExists());

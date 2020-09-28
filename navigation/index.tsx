@@ -4,14 +4,23 @@ import * as React from 'react';
 import {forwardRef} from 'react';
 
 import NotFoundScreen from '../screens/NotFoundScreen';
-import {RootStackParamList} from '../types';
 import CompanyListScreen from "../screens/CompanyListScreen";
+import {isReadyRef, navigationRef} from "./NavigationService";
+import CompanyDetailScreen from "../screens/CompanyDetailScreen";
+import {RootStackParamList} from "../constants/Screens";
 
 // If you are not familiar with React Navigation, we recommend going through the
 // "Fundamentals" guide: https://reactnavigation.org/docs/getting-started
-export const Navigation = forwardRef(() => {
+export const Navigation = forwardRef((props, ref) => {
+    React.useEffect(() => {
+        return () => {
+            isReadyRef.current = false
+        };
+    }, []);
     return (
-        <NavigationContainer>
+        <NavigationContainer ref={navigationRef} onReady={() => {
+            isReadyRef.current = true;
+        }}>
             <RootNavigator/>
         </NavigationContainer>
     );
@@ -26,7 +35,7 @@ function RootNavigator() {
         <Stack.Navigator screenOptions={{headerShown: false}}>
             <Stack.Screen name="CompanyList" component={CompanyListScreen}/>
             <Stack.Screen name="NotFound" component={NotFoundScreen} options={{title: 'Oops!'}}/>
-            <Stack.Screen name="CompanyDetails" component={NotFoundScreen} options={{title: 'Oops!'}}/>
+            <Stack.Screen name="CompanyDetails" component={CompanyDetailScreen}/>
         </Stack.Navigator>
     );
 }

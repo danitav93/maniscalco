@@ -3,8 +3,7 @@ import React, {FC, useCallback, useMemo, useState} from "react";
 import {Company} from "../dbApi";
 import {ReduxState} from "../redux/reducer";
 import {useDispatch, useSelector} from "react-redux";
-import {useNavigation} from '@react-navigation/native';
-import {Button, Card, Icon, ListItem, Text, withTheme} from 'react-native-elements';
+import {Button, Card, ListItem, withTheme} from 'react-native-elements';
 import {Autocomplete} from "../components/ui/Autocomplete";
 import CreateCompanyForm from "../components/company/CreateCompanyForm";
 import {Modal} from "../components/ui/Modal/Modal";
@@ -18,6 +17,9 @@ import {yupResolver} from '@hookform/resolvers';
 import {companySchema} from "../schemas/company";
 import {userChangedSearchCompanyFilter, userSubmittedNewCompany} from "../redux/events";
 import ModalFooter from "../components/ui/Modal/ModalFooter";
+import {NavigationHandler} from "../navigation/NavigationService";
+import {Email} from "../components/ui/Email";
+import {PhoneNumber} from "../components/ui/PhoneNumber";
 
 
 const filteredCompaniesSelector = (state: ReduxState) => state.companies.filteredCompanies;
@@ -36,7 +38,6 @@ const CompanyListScreen: FC = (props) => {
 
     const dispatch = useDispatch();
 
-    const navigation = useNavigation();
 
     const onItemSelected = useCallback((item: Company) => () => {
         setSelectedCompany(item);
@@ -48,7 +49,9 @@ const CompanyListScreen: FC = (props) => {
         dispatch(userChangedSearchCompanyFilter(value));
     }, []);
     const goToCompanyDetail = useCallback(() => {
-        navigation.navigate('CompanyDetails');
+        if (selectedCompany) {
+            NavigationHandler.navigateToCompanyDetails(selectedCompany.companyId)
+        }
     }, [selectedCompany])
 
     const RenderItem = useCallback(({item}: { item: Company }) => (
@@ -90,24 +93,20 @@ const CompanyListScreen: FC = (props) => {
                 {selectedCompany && (
                     <>
                         <Card wrapperStyle={styles.resumeContainer}>
-                            <View>
-                                <Card.Title>{selectedCompany.name}</Card.Title>
-                                <Card.Divider/>
-                            </View>
-                            <Text>Email: {selectedCompany.email ?? ''}</Text>
-                            <Text>Telefono: {selectedCompany.phoneNumber ?? ''}</Text>
-                            <Button title={"Vai al dettaglio"} onPress={goToCompanyDetail}/>
+                            <Card.Title>{selectedCompany.name}</Card.Title>
+                            <Card.Divider/>
+                            <Email email={selectedCompany.email}/>
+                            <PhoneNumber phone={selectedCompany.phoneNumber}/>
+                            <Button title={"Vai alla scheda"} onPress={goToCompanyDetail}/>
                         </Card>
                     </>
                 )}
                 <KeyboardAvoidingView behavior={'position'} style={styles.createButtonStyle}>
-                    <Icon
-                        raised
-                        name='plus'
-                        type='font-awesome'
+                    <Button
+                        title={"Aggiungi nuova azienda"}
+                        titleStyle={{fontSize: 16}}
                         onPress={openModal}
-                        color={props.theme.colors.primary}
-                        size={35}/>
+                    />
                 </KeyboardAvoidingView>
             </View>
             <Modal isOpen={isModalOpen}>

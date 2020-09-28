@@ -1,23 +1,23 @@
-import { NavigationActions } from 'react-navigation';
+import * as React from 'react';
 
-const config = {
-    navigator: undefined
-};
+export const navigationRef = React.createRef();
 
-export function setNavigator(nav: any) {
-    if (nav) {
-        config.navigator = nav;
+export const isReadyRef = React.createRef();
+
+
+function navigate(name: string, params: object) {
+    if (isReadyRef.current && navigationRef.current) {
+        navigationRef.current.navigate(name, params);
+    } else {
+        console.error("App is not mounted yet")
     }
 }
-export function navigate(routeName: string, params) {
-    if (config.navigator && routeName) {
-        let action = NavigationActions.navigate({ routeName, params });
-        config.navigator!.dispatch(action);
+
+export const NavigationHandler = {
+
+    navigateToCompanyDetails: (companyId: string) => {
+        navigate('CompanyDetails', {companyId});
     }
-}
-export function goBack() {
-    if (config.navigator) {
-        let action = NavigationActions.back({});
-        config.navigator!.dispatch(action);
-    }
+
+
 }

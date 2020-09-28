@@ -20,6 +20,8 @@ export enum Actions {
     companyNameAlreadyExists = 'companyNameAlreadyExists',
     clearErrors = 'clearErrors',
     genericError = 'genericError',
+    openModal = 'openModal',
+    closeModal = 'closeModal'
 }
 
 export const filteredCompaniesLoaded = makePayloadAction<Company[]>(Actions.filteredCompaniesLoaded, false);
@@ -39,3 +41,9 @@ export type ClearErrors = ReturnType<typeof clearErrors>;
 
 export const genericError = makeAction(Actions.genericError, false);
 export type GenericError = ReturnType<typeof genericError>;
+
+export const openModal = makeAction(Actions.openModal);
+export type OpenModal = ReturnType<typeof openModal>;
+
+export const closeModal = makeAction(Actions.closeModal);
+export type CloseModal = ReturnType<typeof closeModal>;
