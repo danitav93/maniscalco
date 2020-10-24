@@ -38,12 +38,18 @@ export default function useCachedResources() {
               "FOREIGN KEY (idSession) REFERENCES sessions(id) ON DELETE CASCADE ON UPDATE NO ACTION);"
           );
           tx.executeSql(
-            "create table if not exists animal (id integer primary key not null, idGroup integer not null, idAnimal,note text ,"+
+            "create table if not exists animal (id integer primary key not null, idGroup integer not null, idAnimal integer not null,note text ,"+
             "front_left_disease text, front_right_disease text,"+
             "rear_left_disease text, rear_right_disease text,"+
             "front_left_cure text, front_right_cure text,"+
             "rear_left_cure text, rear_right_cure text,"+
              "FOREIGN KEY (idGroup) REFERENCES groups(id) ON DELETE CASCADE ON UPDATE NO ACTION);"
+          );
+          tx.executeSql(
+            "create table if not exists disease (id integer primary key not null, description text not null,"  
+          );
+          tx.executeSql(
+            "create table if not exists cure (id integer primary key not null, description text not null,"  
           );
 
 
