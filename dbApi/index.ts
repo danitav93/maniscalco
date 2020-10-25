@@ -1,10 +1,7 @@
 import * as SQLite from 'expo-sqlite';
-<<<<<<< HEAD
 import { Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-=======
 import {CompanyNameAlreadyExistsError} from "../errors/CompanyNameAlreadyExistsError";
->>>>>>> origin/introduce-ui-library
 
 const sqlLite = SQLite.openDatabase("db.db");
 const navigation = useNavigation();
@@ -148,57 +145,29 @@ class Db {
      * @param company
      * @return companyId
      */
-<<<<<<< HEAD
-    createCompany = (company: CreateCompanyInput): void => {
+    createCompany = (company: CreateCompanyInput): Promise<string> => {
         // todo: return company id
+        return new Promise((resolve,reject)=>{
+            sqlLite.transaction(
+                tx => {
+                   tx.executeSql("insert into company (name,email,phoneNumber) values (?, ?, ?)", [company.name,company.email,company.phone], (tx, results) => {
+                       console.log('Results', results);
+                       if (results.rowsAffected > 0) {
+                         resolve(results.insertId.toString())
+                       } else reject();
+                   }
+                   );
+                 });
+        })
         
-        sqlLite.transaction(
-             tx => {
-                tx.executeSql("insert into company (name,email,phoneNumber) values (?, ?, ?)", [company.name,company.mail,company.phone], (tx, results) => {
-                    console.log('Results', results.rowsAffected);
-                    if (results.rowsAffected > 0) {
-                      Alert.alert(
-                        'Success',
-                        'You are Registered Successfully',
-                        [
-                          {
-                            text: 'Ok',
-                            onPress: () => navigation.navigate('HomeScreen'),
-                          },
-                        ],
-                        { cancelable: false }
-                      );
-                    } else alert('Registration Failed');
-                }
-                );
-              });
-=======
-    createCompany = (company: CreateCompanyInput): string => {
-        //throw new CompanyNameAlreadyExistsError();
-        // todo: return company id
-        const argument = "";
-        /*sqlLite.transaction(
-            tx => {
-                tx.executeSql("insert into items (done, value) values (0, ?)", [argument]);
-                tx.executeSql("select * from items", [], (_, { rows }) =>
-                    console.log(JSON.stringify(rows))
-                );
-            },
-            () => {
-                // todo: choose right error
-                throw new Error();
-            },
-        );*/
-        return "aooo";
->>>>>>> origin/introduce-ui-library
-    }
+            }
 
     updateCompany = (company: UpdateCompanyInput): void => {
         
         sqlLite.transaction((tx) => {
             tx.executeSql(
               'UPDATE table_user set user_name=?, user_contact=? , user_address=? where user_id=?',
-              [company.name, company.mail, company.phone],
+              [company.name, company.email, company.phone],
               (tx, results) => {
                 console.log('Results', results.rowsAffected);
                 if (results.rowsAffected > 0) {
