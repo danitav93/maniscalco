@@ -1,29 +1,49 @@
-import {Company} from "../../dbApi";
+import {Company, Session} from "../../dbApi";
 
-function makeActionCreator(type: string) {
+
+function makeAction(type: string, isLoading?: boolean) {
     return function () {
-        return { type }
+        return { type, isLoading }
     }
 }
 
-function makeTypedActionCreator<T>(type: string) {
+function makePayloadAction<T>(type: string, isLoading?: boolean) {
     return function (payload: T) {
-        return { type, payload }
+        return { type, payload, isLoading }
     }
 }
-
 
 export enum Actions {
-    userPressedButton = 'userPressedButton',
-    userPressedButton2 = 'userPressedButton2',
-    companiesLoaded = 'companiesLoaded',
+    filteredCompaniesLoaded = 'filteredCompaniesLoaded',
+    companyDetailLoaded = 'companyDetailLoaded',
+    companySessionsLoaded = 'companySessionsLoaded',
+    companyNameAlreadyExists = 'companyNameAlreadyExists',
+    clearErrors = 'clearErrors',
+    genericError = 'genericError',
+    openModal = 'openModal',
+    closeModal = 'closeModal'
 }
 
-export const userPressedButton = makeActionCreator(Actions.userPressedButton);
-export type UserPressedButton = ReturnType<typeof userPressedButton>;
+export const filteredCompaniesLoaded = makePayloadAction<Company[]>(Actions.filteredCompaniesLoaded, false);
+export type FilteredCompaniesLoaded = ReturnType<typeof filteredCompaniesLoaded>;
 
-export const userPressedButton2 = makeActionCreator(Actions.userPressedButton2);
-export type UserPressedButton2 = ReturnType<typeof userPressedButton2>;
+export const companyDetailLoaded = makePayloadAction<Company>(Actions.companyDetailLoaded, false);
+export type CompanyDetailLoaded = ReturnType<typeof companyDetailLoaded>;
 
-export const companiesLoaded = makeTypedActionCreator<Company[]>(Actions.companiesLoaded);
-export type CompaniesLoaded = ReturnType<typeof companiesLoaded>;
+export const companySessionsLoaded = makePayloadAction<Session[]>(Actions.companySessionsLoaded, false);
+export type CompanySessionsLoaded = ReturnType<typeof companySessionsLoaded>;
+
+export const companyNameAlreadyExists = makeAction(Actions.companyNameAlreadyExists, false);
+export type CompanyNameAlreadyExists = ReturnType<typeof companyNameAlreadyExists>;
+
+export const clearErrors = makeAction(Actions.clearErrors, false);
+export type ClearErrors = ReturnType<typeof clearErrors>;
+
+export const genericError = makeAction(Actions.genericError, false);
+export type GenericError = ReturnType<typeof genericError>;
+
+export const openModal = makeAction(Actions.openModal);
+export type OpenModal = ReturnType<typeof openModal>;
+
+export const closeModal = makeAction(Actions.closeModal);
+export type CloseModal = ReturnType<typeof closeModal>;

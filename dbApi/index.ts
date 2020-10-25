@@ -1,13 +1,17 @@
 import * as SQLite from 'expo-sqlite';
+<<<<<<< HEAD
 import { Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+=======
+import {CompanyNameAlreadyExistsError} from "../errors/CompanyNameAlreadyExistsError";
+>>>>>>> origin/introduce-ui-library
 
 const sqlLite = SQLite.openDatabase("db.db");
 const navigation = useNavigation();
 
-interface CreateCompanyInput {
+export interface CreateCompanyInput {
     name: string;
-    mail?: string;
+    email?: string;
     phone?: string;
 }
 
@@ -23,11 +27,6 @@ export interface CreateSessionInput {
 
 export interface UpdateSessionInput extends CreateSessionInput {
     sessionId: string;
-}
-
-export interface CompanyItem {
-    companyId: string;
-    name: string;
 }
 
 export interface Company {
@@ -111,6 +110,35 @@ export enum Cure {
     // todo
 }
 
+//todo remove, these are just stub data
+const company1: Company = {
+    companyId: 'id1',
+    name: 'Paolo e gina vacche',
+    email: 'azionda@maniscalco.it',
+    phoneNumber: '3278788372',
+};
+const company2: Company = {
+    companyId: 'id2',
+    name: 'Federico pavoni',
+    email: 'federico@maniscalco.it',
+    phoneNumber: '333 3422459',
+};
+const session1: Session = {
+    date: '24/05/2020',
+    sessionId: 'id1',
+    price: '34'
+}
+const session2: Session = {
+    date: '12/09/2020',
+    sessionId: 'id2',
+    price: '33'
+}
+const session3: Session = {
+    date: '01/12/2021',
+    sessionId: 'id3',
+    price: '32'
+}
+
 class Db {
 
 
@@ -120,6 +148,7 @@ class Db {
      * @param company
      * @return companyId
      */
+<<<<<<< HEAD
     createCompany = (company: CreateCompanyInput): void => {
         // todo: return company id
         
@@ -143,6 +172,25 @@ class Db {
                 }
                 );
               });
+=======
+    createCompany = (company: CreateCompanyInput): string => {
+        //throw new CompanyNameAlreadyExistsError();
+        // todo: return company id
+        const argument = "";
+        /*sqlLite.transaction(
+            tx => {
+                tx.executeSql("insert into items (done, value) values (0, ?)", [argument]);
+                tx.executeSql("select * from items", [], (_, { rows }) =>
+                    console.log(JSON.stringify(rows))
+                );
+            },
+            () => {
+                // todo: choose right error
+                throw new Error();
+            },
+        );*/
+        return "aooo";
+>>>>>>> origin/introduce-ui-library
     }
 
     updateCompany = (company: UpdateCompanyInput): void => {
@@ -171,22 +219,14 @@ class Db {
           });
     }
 
-    getCompaniesBySearchFilter = (searchStr: string): CompanyItem[] => {
+    getCompaniesBySearchFilter = (searchStr: string): Company[] => {
         // todo: return list by filter
-        return [{
-            companyId: 'id1',
-            name: 'Pippo er magnone',
-        }];
+        return [company1, company2].filter(company => company.name.indexOf(searchStr) === 0);
     }
 
     getCompanyById = (id: string): Company => {
         //todo return companyDetails by id
-        return {
-            companyId: '',
-            email: '',
-            name: '',
-            phoneNumber: ''
-        }
+        return company1
     }
 
     createSession = (session: CreateSessionInput): string => {
@@ -200,7 +240,7 @@ class Db {
 
     getSessionsByCompanyId = (companyId: string): SessionItem[] => {
         // todo
-        return [];
+        return [session1, session2, session3];
     }
 
     getSessionById = (sessionId: string): Session => {

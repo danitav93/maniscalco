@@ -6,7 +6,7 @@ import * as SQLite from 'expo-sqlite';
 import * as FileSystem from 'expo-file-system';
 
 
-const db = SQLite.openDatabase("db.db");
+const db = SQLite.openDatabase("Pippo");
 
 export default function useCachedResources() {
   const [isLoadingComplete, setLoadingComplete] = React.useState(false);
@@ -22,7 +22,6 @@ export default function useCachedResources() {
           ...Ionicons.font,
           'space-mono': require('../assets/fonts/SpaceMono-Regular.ttf'),
         });
-
         // execute sql lite db scripts
         db.transaction(tx => {
           // todo: create tables
