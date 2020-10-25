@@ -1,10 +1,8 @@
 import * as SQLite from 'expo-sqlite';
-import { Alert } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import {CompanyNameAlreadyExistsError} from "../errors/CompanyNameAlreadyExistsError";
+import {Alert} from 'react-native';
+import {DB_NAME} from "../constants/db";
 
-const sqlLite = SQLite.openDatabase("db.db");
-const navigation = useNavigation();
+const sqlLite = SQLite.openDatabase(DB_NAME);
 
 export interface CreateCompanyInput {
     name: string;
@@ -12,7 +10,7 @@ export interface CreateCompanyInput {
     phone?: string;
 }
 
-export interface UpdateCompanyInput extends CreateCompanyInput{
+export interface UpdateCompanyInput extends CreateCompanyInput {
     companyId: string;
 }
 
@@ -139,53 +137,60 @@ const session3: Session = {
 class Db {
 
 
-      
     /**
      * Create company
      * @param company
      * @return companyId
      */
     createCompany = (company: CreateCompanyInput): Promise<string> => {
-        // todo: return company id
-        return new Promise((resolve,reject)=>{
+        console.log("HERE1");
+        return new Promise((resolve, reject) => {
+            console.log("HERE2");
             sqlLite.transaction(
                 tx => {
-                   tx.executeSql("insert into company (name,email,phoneNumber) values (?, ?, ?)", [company.name,company.email,company.phone], (tx, results) => {
-                       console.log('Results', results);
-                       if (results.rowsAffected > 0) {
-                         resolve(results.insertId.toString())
-                       } else reject();
-                   }
-                   );
-                 });
+                    console.log("HERE3");
+                    tx.executeSql("insert into company (name,email,phoneNumber) values (?, ?, ?)", [company.name, company.email, company.phone], (tx, results) => {
+                            console.log('Results', results);
+                            if (results.rowsAffected > 0) {
+                                resolve(results.insertId.toString())
+                            } else reject();
+                        },
+                        (tx, error) => {
+                            console.log(error);
+                            reject();
+                            return false;
+                        }
+                    );
+                    console.log("HERE4");
+                });
         })
-        
-            }
+
+    }
 
     updateCompany = (company: UpdateCompanyInput): void => {
-        
+
         sqlLite.transaction((tx) => {
             tx.executeSql(
-              'UPDATE table_user set user_name=?, user_contact=? , user_address=? where user_id=?',
-              [company.name, company.email, company.phone],
-              (tx, results) => {
-                console.log('Results', results.rowsAffected);
-                if (results.rowsAffected > 0) {
-                  Alert.alert(
-                    'Success',
-                    'Company updated successfully',
-                    [
-                      {
-                        text: 'Ok',
-                        onPress: () => navigation.navigate('HomeScreen'),
-                      },
-                    ],
-                    { cancelable: false }
-                  );
-                } else alert('Updation Failed');
-              }
+                'UPDATE table_user set user_name=?, user_contact=? , user_address=? where user_id=?',
+                [company.name, company.email, company.phone],
+                (tx, results) => {
+                    console.log('Results', results.rowsAffected);
+                    if (results.rowsAffected > 0) {
+                        Alert.alert(
+                            'Success',
+                            'Company updated successfully',
+                            [
+                                {
+                                    text: 'Ok',
+                                    onPress: () => navigation.navigate('HomeScreen'),
+                                },
+                            ],
+                            {cancelable: false}
+                        );
+                    } else alert('Updation Failed');
+                }
             );
-          });
+        });
     }
 
     getCompaniesBySearchFilter = (searchStr: string): Company[] => {
