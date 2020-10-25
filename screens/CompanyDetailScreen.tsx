@@ -63,11 +63,13 @@ const CompanyDetailScreen: FC = () => {
                 </View>
             </View>
             <Text style={styles.listTitle}>Diario delle sessioni</Text>
-            <FlatList
-                data={sessions}
-                renderItem={RenderItem}
-                keyExtractor={keyExtractor}
-            />
+            {(sessions && sessions.length) ? (
+                <FlatList
+                    data={sessions}
+                    renderItem={RenderItem}
+                    keyExtractor={keyExtractor}
+                />) : (<Text style={styles.emptyListTitle}>Non è stata ancora creata alcuna sessione</Text>)
+            }
         </View>
     );
 }
@@ -95,6 +97,9 @@ const styles = StyleSheet.create({
     sessionsContainer: {
         backgroundColor: 'red',
         display: 'flex'
+    },
+    emptyListTitle: {
+        fontSize: 18,
     }
 });
 
