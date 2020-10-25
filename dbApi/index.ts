@@ -1,7 +1,9 @@
 import * as SQLite from 'expo-sqlite';
+import { Alert } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 const sqlLite = SQLite.openDatabase("db.db");
-
+const navigation = useNavigation();
 
 interface CreateCompanyInput {
     name: string;
@@ -111,31 +113,62 @@ export enum Cure {
 
 class Db {
 
+
+      
     /**
      * Create company
      * @param company
      * @return companyId
      */
-    createCompany = (company: CreateCompanyInput): string => {
+    createCompany = (company: CreateCompanyInput): void => {
         // todo: return company id
-        const argument = "";
+        
         sqlLite.transaction(
-            tx => {
-                tx.executeSql("insert into items (done, value) values (0, ?)", [argument]);
-                tx.executeSql("select * from items", [], (_, { rows }) =>
-                    console.log(JSON.stringify(rows))
+             tx => {
+                tx.executeSql("insert into company (name,email,phoneNumber) values (?, ?, ?)", [company.name,company.mail,company.phone], (tx, results) => {
+                    console.log('Results', results.rowsAffected);
+                    if (results.rowsAffected > 0) {
+                      Alert.alert(
+                        'Success',
+                        'You are Registered Successfully',
+                        [
+                          {
+                            text: 'Ok',
+                            onPress: () => navigation.navigate('HomeScreen'),
+                          },
+                        ],
+                        { cancelable: false }
+                      );
+                    } else alert('Registration Failed');
+                }
                 );
-            },
-            () => {
-                // todo: choose right error
-                throw new Error();
-            },
-        );
-        return "";
+              });
     }
 
     updateCompany = (company: UpdateCompanyInput): void => {
-        // todo: implement updateCompany
+        
+        sqlLite.transaction((tx) => {
+            tx.executeSql(
+              'UPDATE table_user set user_name=?, user_contact=? , user_address=? where user_id=?',
+              [company.name, company.mail, company.phone],
+              (tx, results) => {
+                console.log('Results', results.rowsAffected);
+                if (results.rowsAffected > 0) {
+                  Alert.alert(
+                    'Success',
+                    'Company updated successfully',
+                    [
+                      {
+                        text: 'Ok',
+                        onPress: () => navigation.navigate('HomeScreen'),
+                      },
+                    ],
+                    { cancelable: false }
+                  );
+                } else alert('Updation Failed');
+              }
+            );
+          });
     }
 
     getCompaniesBySearchFilter = (searchStr: string): CompanyItem[] => {
