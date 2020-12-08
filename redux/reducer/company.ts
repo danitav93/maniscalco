@@ -1,18 +1,54 @@
-import {Company} from "../../dbApi";
-import {Actions, FilteredCompaniesLoaded} from "../action";
+import {Company, Session} from "../../dbApi";
+import {
+    Actions,
+    CompanyDetailLoaded,
+    CompanySessionsLoaded,
+    FilteredCompaniesLoaded
+} from "../action";
 import {combineReducers} from "redux";
+import {ClearCompanyDetails, Events} from "../events";
 
-const companyReducer = combineReducers({
-    filteredCompanies: filteredCompanyReducer,
-})
+export interface CompanyDetail {
+    company: Company | undefined;
+    sessions: Session[];
+}
 
-function filteredCompanyReducer(state = [], action: FilteredCompaniesLoaded): Company[] {
+const initialCompanyDetailState: CompanyDetail = {
+    company: undefined,
+    sessions: [],
+}
+const companyDetailReducer = (state = initialCompanyDetailState, action: CompanyDetailLoaded | ClearCompanyDetails | CompanySessionsLoaded): CompanyDetail => {
+    switch (action.type) {
+        case Actions.companyDetailLoaded:
+            return {
+                ...state,
+                company: action.payload
+            };
+        case Events.clearCompanyDetails:
+            return initialCompanyDetailState;
+        case Actions.companySessionsLoaded:
+            return {
+                ...state,
+                sessions: action.payload
+            };
+        default:
+            return state
+    }
+}
+
+function filteredCompaniesReducer(state = [], action: FilteredCompaniesLoaded): Company[] {
     switch (action.type) {
         case Actions.filteredCompaniesLoaded:
             return action.payload
-        default: return state
+        default:
+            return state
     }
 }
+
+const companyReducer = combineReducers({
+    filteredCompanies: filteredCompaniesReducer,
+    companyDetail: companyDetailReducer,
+})
 
 
 export default companyReducer;

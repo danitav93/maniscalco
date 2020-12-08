@@ -1,25 +1,49 @@
-import {Company} from "../../dbApi";
+import {Company, Session} from "../../dbApi";
 
-function makeAction(type: string) {
+
+function makeAction(type: string, isLoading?: boolean) {
     return function () {
-        return { type }
+        return { type, isLoading }
     }
 }
 
-function makeTypedAction<T>(type: string) {
+function makePayloadAction<T>(type: string, isLoading?: boolean) {
     return function (payload: T) {
-        return { type, payload }
+        return { type, payload, isLoading }
     }
 }
-
 
 export enum Actions {
     filteredCompaniesLoaded = 'filteredCompaniesLoaded',
-    userChangedSearchCompanyFilter = 'userChangedSearchCompanyFilter',
+    companyDetailLoaded = 'companyDetailLoaded',
+    companySessionsLoaded = 'companySessionsLoaded',
+    companyNameAlreadyExists = 'companyNameAlreadyExists',
+    clearErrors = 'clearErrors',
+    genericError = 'genericError',
+    openModal = 'openModal',
+    closeModal = 'closeModal'
 }
 
-export const filteredCompaniesLoaded = makeTypedAction<Company[]>(Actions.filteredCompaniesLoaded);
+export const filteredCompaniesLoaded = makePayloadAction<Company[]>(Actions.filteredCompaniesLoaded, false);
 export type FilteredCompaniesLoaded = ReturnType<typeof filteredCompaniesLoaded>;
 
-export const userChangedSearchCompanyFilter = makeTypedAction<string>(Actions.userChangedSearchCompanyFilter);
-export type UserChangedSearchCompanyFilter = ReturnType<typeof userChangedSearchCompanyFilter>;
+export const companyDetailLoaded = makePayloadAction<Company>(Actions.companyDetailLoaded, false);
+export type CompanyDetailLoaded = ReturnType<typeof companyDetailLoaded>;
+
+export const companySessionsLoaded = makePayloadAction<Session[]>(Actions.companySessionsLoaded, false);
+export type CompanySessionsLoaded = ReturnType<typeof companySessionsLoaded>;
+
+export const companyNameAlreadyExists = makeAction(Actions.companyNameAlreadyExists, false);
+export type CompanyNameAlreadyExists = ReturnType<typeof companyNameAlreadyExists>;
+
+export const clearErrors = makeAction(Actions.clearErrors, false);
+export type ClearErrors = ReturnType<typeof clearErrors>;
+
+export const genericError = makeAction(Actions.genericError, false);
+export type GenericError = ReturnType<typeof genericError>;
+
+export const openModal = makeAction(Actions.openModal);
+export type OpenModal = ReturnType<typeof openModal>;
+
+export const closeModal = makeAction(Actions.closeModal);
+export type CloseModal = ReturnType<typeof closeModal>;

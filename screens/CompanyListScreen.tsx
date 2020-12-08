@@ -1,30 +1,32 @@
-import { Button, StyleSheet, TouchableOpacity } from 'react-native';
-import { Text, View } from '../components/Themed';
-import React, {FC, useCallback, useState} from "react";
-import { Company } from "../dbApi";
-import { ReduxState } from "../redux/reducer";
-import { useDispatch, useSelector} from "react-redux";
-import { userChangedSearchCompanyFilter } from "../redux/action";
-import Autocomplete from "react-native-autocomplete-input";
-import { useNavigation } from '@react-navigation/native';
+import {KeyboardAvoidingView, StyleSheet, TouchableOpacity, View} from 'react-native';
+import React, {FC, useCallback, useMemo, useState} from "react";
+import {Company} from "../dbApi";
+import {ReduxState} from "../redux/reducer";
+import {useDispatch, useSelector} from "react-redux";
+import {Button, Card, ListItem, withTheme} from 'react-native-elements';
+import {Autocomplete} from "../components/ui/Autocomplete";
+import CreateCompanyForm from "../components/company/CreateCompanyForm";
+import {Modal} from "../components/ui/Modal/Modal";
+import {ModalHeader} from "../components/ui/Modal/ModalHeader";
+import {ModalBody} from "../components/ui/Modal/ModalBody";
+import {CancelModalFooterButton} from "../components/ui/Modal/CancelModalFooterButton";
+import {SubmitModalFooterButton} from "../components/ui/Modal/SubmitModalButton";
+import {useModal} from "../hooks/useModal";
+import {FormProvider, useForm} from "react-hook-form";
+import {yupResolver} from '@hookform/resolvers';
+import {companySchema} from "../schemas/company";
+import {userChangedSearchCompanyFilter, userSubmittedNewCompany} from "../redux/events";
+import ModalFooter from "../components/ui/Modal/ModalFooter";
+import {NavigationHandler} from "../navigation/NavigationService";
+import {Email} from "../components/ui/Email";
+import {PhoneNumber} from "../components/ui/PhoneNumber";
 
 
 const filteredCompaniesSelector = (state: ReduxState) => state.companies.filteredCompanies;
 
 
-const Icon = () => <Text>fdsfds</Text>;
+const CompanyListScreen: FC = (props) => {
 
-const actions = [
-    {
-        text: "Accessibility",
-        icon: Icon,
-        name: "bt_accessibility",
-        position: 2
-    },
-];
-
-
-const CompanyListScreen: FC = () => {
 
     const [selectedCompany, setSelectedCompany] = useState<Company | undefined>();
 
@@ -32,55 +34,93 @@ const CompanyListScreen: FC = () => {
 
     const filteredCompanies: Company[] = useSelector(filteredCompaniesSelector);
 
+    const itemsToShow = useMemo(() => (!!selectedCompany || !query) ? [] : filteredCompanies, [selectedCompany, query, filteredCompanies])
+
     const dispatch = useDispatch();
 
-    const navigation = useNavigation();
 
-    const onItemSelected= useCallback((item: Company) => () => {
+    const onItemSelected = useCallback((item: Company) => () => {
         setSelectedCompany(item);
         setQuery(item.name);
-    },  []);
-    const onSearchStringChanged= useCallback( value => {
+    }, []);
+    const onSearchStringChanged = useCallback((value: string) => {
         setQuery(value);
         setSelectedCompany(undefined);
         dispatch(userChangedSearchCompanyFilter(value));
-    },  []);
-    const goToCompanyDetail = useCallback(()=>{
-        navigation.navigate('CompanyDetails');
-    },[selectedCompany])
+    }, []);
+    const goToCompanyDetail = useCallback(() => {
+        if (selectedCompany) {
+            NavigationHandler.navigateToCompanyDetails(selectedCompany.companyId)
+        }
+    }, [selectedCompany])
 
-    const RenderItem = useCallback(({ item }: { item: Company }) => (
+    const RenderItem = useCallback(({item}: { item: Company }) => (
         <TouchableOpacity onPress={onItemSelected(item)}>
-            <View style={styles.itemContainer}>
-                <Text>{item.name}</Text>
-            </View>
+            <ListItem key={item.companyId} bottomDivider>
+                <ListItem.Content>
+                    <ListItem.Title>{item.name}</ListItem.Title>
+                    <ListItem.Subtitle>{item.email}</ListItem.Subtitle>
+                </ListItem.Content>
+            </ListItem>
         </TouchableOpacity>
-    ),[onItemSelected])
+    ), [onItemSelected])
+
+
+    const {
+        isModalOpen, closeModal, openModal
+    } = useModal();
+
+    const methods = useForm({
+        mode: "onSubmit",
+        resolver: yupResolver(companySchema),
+    });
+
+    const createCompany = useCallback((data) => {
+        dispatch(userSubmittedNewCompany(data))
+    }, [dispatch])
+
 
     return (
         <>
             <View style={styles.container}>
-                <View style={styles.autocompleteContainer}>
-                    <Text style={styles.title}>Cerca azienda</Text>
-                    <Autocomplete
-                        data={filteredCompanies}
-                        onChangeText={onSearchStringChanged}
-                        renderItem={RenderItem}
-                        defaultValue={query}
-                        hideResults={!!selectedCompany}
+                <Autocomplete
+                    data={itemsToShow}
+                    onChangeText={onSearchStringChanged}
+                    renderItem={RenderItem}
+                    value={query}
+                    placeholder={"Cerca una azienda"}
+                />
+                {selectedCompany && (
+                    <>
+                        <Card wrapperStyle={styles.resumeContainer}>
+                            <Card.Title>{selectedCompany.name}</Card.Title>
+                            <Card.Divider/>
+                            <Email email={selectedCompany.email}/>
+                            <PhoneNumber phone={selectedCompany.phoneNumber}/>
+                            <Button title={"Vai alla scheda"} onPress={goToCompanyDetail}/>
+                        </Card>
+                    </>
+                )}
+                <KeyboardAvoidingView behavior={'position'} style={styles.createButtonStyle}>
+                    <Button
+                        title={"Aggiungi nuova azienda"}
+                        titleStyle={{fontSize: 16}}
+                        onPress={openModal}
                     />
-                </View>
-                {selectedCompany && (<View style={styles.resumeContainer}>
-                    <Text>Nome: {selectedCompany.name}</Text>
-                    <Text>Email: {selectedCompany.email ?? ''}</Text>
-                    <Text>Telefono: {selectedCompany.phoneNumber ?? ''}</Text>
-                    <Button title={"Vai al dettaglio"} onPress={goToCompanyDetail}/>
-                </View>)}
-
+                </KeyboardAvoidingView>
             </View>
-            <TouchableOpacity onPress={goToCompanyDetail} style={styles.fab}>
-                <Text style={styles.fabIcon}>+</Text>
-            </TouchableOpacity>
+            <Modal isOpen={isModalOpen}>
+                <ModalHeader title={"Aggiungi una nuova azienda"}/>
+                <ModalBody>
+                    <FormProvider {...methods} >
+                        <CreateCompanyForm/>
+                    </FormProvider>
+                </ModalBody>
+                <ModalFooter>
+                    <CancelModalFooterButton onClose={closeModal}/>
+                    <SubmitModalFooterButton onSubmit={methods.handleSubmit(createCompany)}/>
+                </ModalFooter>
+            </Modal>
         </>
     );
 }
@@ -90,50 +130,18 @@ const styles = StyleSheet.create({
         width: '100%',
         height: '100%',
         display: 'flex',
-    },
-    title: {
-        fontSize: 20,
-        fontWeight: 'bold',
-    },
-    autocompleteContainer: {
-        paddingTop: 56,
-        paddingLeft: 24,
-        paddingRight: 24,
-        position: 'absolute',
-        zIndex: 1,
-        left: 0,
-        flex:1,
-        right: 0,
-        top: 0,
-    },
-    itemContainer: {
-        display: 'flex',
-        height: 40,
-        justifyContent: 'center',
-        paddingLeft: 5,
+        padding: 20,
     },
     resumeContainer: {
+        height: 230,
         display: 'flex',
-        paddingLeft: 24,
-        position: 'absolute',
-        top: 200,
+        justifyContent: 'space-between',
     },
-    fab: {
+    createButtonStyle: {
         position: 'absolute',
-        width: 56,
-        height: 56,
-        alignItems: 'center',
-        justifyContent: 'center',
-        right: 20,
         bottom: 20,
-        backgroundColor: '#03A9F4',
-        borderRadius: 30,
-        elevation: 8
-    },
-    fabIcon: {
-        fontSize: 40,
-        color: 'white'
+        right: 20,
     }
 });
 
-export default CompanyListScreen
+export default withTheme(CompanyListScreen);
