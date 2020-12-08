@@ -1,4 +1,4 @@
-import {Actions, ClearErrors, CloseModal, CompanyNameAlreadyExists, GenericError, OpenModal} from "../action";
+import {Actions, ClearErrors, CompanyNameAlreadyExists, GenericError} from "../action";
 import {combineReducers} from "redux";
 
 
@@ -22,21 +22,11 @@ function modalLoadingReducer(state = false, action: { isLoading: boolean }): boo
     return action.isLoading ?? state;
 }
 
-function modalOpenReducer(state = false, action: OpenModal | CloseModal): boolean {
-    switch (action.type) {
-        case Actions.openModal:
-            return true;
-        case Actions.closeModal:
-            return false;
-        default:
-            return state
-    }
-}
+
 
 const modalReducer = combineReducers({
     errorMessage: modalErrorReducer,
     isLoading: modalLoadingReducer,
-    isOpen: modalOpenReducer,
 })
 
 

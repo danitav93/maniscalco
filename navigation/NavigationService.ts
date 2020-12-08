@@ -17,6 +17,9 @@ export const NavigationHandler = {
 
     navigateToCompanyDetails: (companyId: string) => {
         navigate('CompanyDetails', {companyId});
+    },
+    navigateToSessionDetails: (sessionId: string) => {
+        navigate('SessionDetails', {sessionId});
     }
 
 

@@ -1,19 +1,9 @@
-import {useCallback} from "react";
-import {useDispatch, useSelector} from "react-redux";
-import {ReduxState} from "../redux/reducer";
-import {closeModal, openModal} from "../redux/action";
-
-const isModalOpenedSelector = (state: ReduxState) => state.modal.isOpen;
+import {useState} from "react";
 
 export const useModal = () => {
-    const dispatch = useDispatch();
-    const isModalOpen = useSelector(isModalOpenedSelector);
-    const openModalCallback = useCallback(() => {
-        dispatch(openModal())
-    }, [dispatch])
-    const closeModalCallback = useCallback(() => {
-        dispatch(closeModal())
-    }, [dispatch])
+    const [isModalOpen, setModalOpen] = useState(false);
+    const openModalCallback = () => setModalOpen(true);
+    const closeModalCallback = () => setModalOpen(false);
     return {
         isModalOpen,
         openModal: openModalCallback,

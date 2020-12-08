@@ -3,13 +3,27 @@ import React, {FC, useCallback, useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {ReduxState} from "../redux/reducer";
 import {RouteProp, useRoute} from '@react-navigation/native';
-import {StackParamsList} from "../navigation";
-import {Company, Session} from "../dbApi";
-import {clearCompanyDetails, loadCompanyDetails} from "../redux/events";
+import {Company, CreateSessionInput, Session} from "../dbApi";
+import {loadCompanyDetails, userSubmittedNewSession} from "../redux/events";
 import {ListItem, Text} from 'react-native-elements';
 import {PageLoader} from "../components/ui/PageLoader";
 import {Email} from "../components/ui/Email";
 import {PhoneNumber} from "../components/ui/PhoneNumber";
+import {RootStackParamList} from "../constants/Screens";
+import {clearCompanyDetails} from "../redux/action";
+import {NavigationHandler} from "../navigation/NavigationService";
+import {FloatingCreateButton} from "../components/ui/FloatingButton";
+import {useModal} from "../hooks/useModal";
+import {Modal} from "../components/ui/Modal/Modal";
+import {ModalHeader} from "../components/ui/Modal/ModalHeader";
+import {ModalBody} from "../components/ui/Modal/ModalBody";
+import {FormProvider, useForm} from "react-hook-form";
+import ModalFooter from "../components/ui/Modal/ModalFooter";
+import {CancelModalFooterButton} from "../components/ui/Modal/CancelModalFooterButton";
+import {SubmitModalFooterButton} from "../components/ui/Modal/SubmitModalButton";
+import {yupResolver} from "@hookform/resolvers";
+import {sessionSchema} from "../schemas/company";
+import CreateSessionForm from "../components/session/CreateSessionForm";
 
 
 const companyDetailSelector = (state: ReduxState) => state.companies.companyDetail.company;
@@ -20,7 +34,7 @@ const CompanyDetailScreen: FC = () => {
 
     const dispatch = useDispatch();
 
-    const route = useRoute<RouteProp<StackParamsList, 'CompanyDetails'>>();
+    const route = useRoute<RouteProp<RootStackParamList, 'CompanyDetails'>>();
 
     useEffect(() => {
         dispatch(loadCompanyDetails(route.params.companyId));
@@ -34,7 +48,7 @@ const CompanyDetailScreen: FC = () => {
     const sessions: Session[] = useSelector(companySessionsSelector);
 
     const onSessionSelected = useCallback((session: Session) => () => {
-        console.log(session.date + ' clicked')
+        NavigationHandler.navigateToSessionDetails(session.sessionId);
     }, [])
 
     const RenderItem = useCallback(({item}: { item: Session }) => (
@@ -49,9 +63,29 @@ const CompanyDetailScreen: FC = () => {
 
     const keyExtractor = (item: Session) => item.sessionId
 
+    const {
+        isModalOpen, closeModal, openModal
+    } = useModal();
+
+    const methods = useForm({
+        mode: "onSubmit",
+        resolver: yupResolver(sessionSchema),
+    });
+
+    const createSession = useCallback((data) => {
+        const input: CreateSessionInput = {
+            companyId: company!.companyId,
+            date: data.date,
+            price: data.price,
+        }
+        dispatch(userSubmittedNewSession(input))
+    }, [dispatch, company])
+
+
     if (!company || !sessions) {
         return <PageLoader/>;
     }
+
 
     return (
         <View style={styles.container}>
@@ -70,6 +104,19 @@ const CompanyDetailScreen: FC = () => {
                     keyExtractor={keyExtractor}
                 />) : (<Text style={styles.emptyListTitle}>Non è stata ancora creata alcuna sessione</Text>)
             }
+            <FloatingCreateButton onPress={openModal} text={"Nuova sessione"}/>
+            <Modal isOpen={isModalOpen}>
+                <ModalHeader title={"Crea una nuova sessione"}/>
+                <ModalBody>
+                    <FormProvider {...methods} >
+                        <CreateSessionForm/>
+                    </FormProvider>
+                </ModalBody>
+                <ModalFooter>
+                    <CancelModalFooterButton onClose={closeModal}/>
+                    <SubmitModalFooterButton onSubmit={methods.handleSubmit(createSession)}/>
+                </ModalFooter>
+            </Modal>
         </View>
     );
 }

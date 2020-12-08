@@ -1,12 +1,12 @@
 import {Company, Session} from "../../dbApi";
 import {
     Actions,
+    ClearCompanyDetails,
     CompanyDetailLoaded,
     CompanySessionsLoaded,
     FilteredCompaniesLoaded
 } from "../action";
 import {combineReducers} from "redux";
-import {ClearCompanyDetails, Events} from "../events";
 
 export interface CompanyDetail {
     company: Company | undefined;
@@ -24,7 +24,7 @@ const companyDetailReducer = (state = initialCompanyDetailState, action: Company
                 ...state,
                 company: action.payload
             };
-        case Events.clearCompanyDetails:
+        case Actions.clearCompanyDetails:
             return initialCompanyDetailState;
         case Actions.companySessionsLoaded:
             return {

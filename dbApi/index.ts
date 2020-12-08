@@ -1,5 +1,4 @@
 import * as SQLite from 'expo-sqlite';
-import {CompanyNameAlreadyExistsError} from "../errors/CompanyNameAlreadyExistsError";
 
 const sqlLite = SQLite.openDatabase("db.db");
 
@@ -10,13 +9,13 @@ export interface CreateCompanyInput {
     phone?: string;
 }
 
-export interface UpdateCompanyInput extends CreateCompanyInput{
+export interface UpdateCompanyInput extends CreateCompanyInput {
     companyId: string;
 }
 
 export interface CreateSessionInput {
     companyId: string;
-    creationDate: string;
+    date: string;
     price: number;
 }
 
@@ -83,14 +82,14 @@ export interface Animal {
     animalId: string;
     label: string;
     notes?: string;
-    frontLeftDisease?: Disease;
-    frontRightDisease?: Disease;
-    rearLeftDisease?: Disease;
-    rearRightDisease?: Disease;
-    frontLeftCure?: Cure;
-    frontRightCure?: Cure;
-    rearLeftCure?: Cure;
-    rearRightCure?: Cure;
+    frontLeftDisease: Disease | null;
+    frontRightDisease: Disease | null;
+    rearLeftDisease: Disease | null;
+    rearRightDisease: Disease | null;
+    frontLeftCure: Cure | null;
+    frontRightCure: Cure | null;
+    rearLeftCure: Cure | null;
+    rearRightCure: Cure | null;
 }
 
 export enum Disease {
@@ -102,7 +101,7 @@ export enum Disease {
 }
 
 export enum Cure {
-    // todo
+    FASCIATURA
 }
 
 //todo remove, these are just stub data
@@ -132,6 +131,90 @@ const session3: Session = {
     date: '01/12/2021',
     sessionId: 'id3',
     price: '32'
+}
+
+const animal1: Animal = {
+    animalId: 'id1',
+    label: 'animale1',
+    notes: 'note1',
+    rearLeftDisease: Disease.FLEMMONE_INTERDIGITALE,
+    rearLeftCure: Cure.FASCIATURA,
+    frontLeftDisease: Disease.DERMATITE_DIGITALE,
+    frontRightDisease: Disease.DERMATITE_INTERFIGITALE,
+    frontRightCure: Cure.FASCIATURA,
+    rearRightCure: Cure.FASCIATURA,
+    rearRightDisease: Disease.DERMATITE_INTERFIGITALE,
+    frontLeftCure: null,
+}
+const animal2: Animal = {
+    ...animal1,
+    animalId: 'id2',
+    label: 'animale2',
+    notes: 'note2',
+}
+const animal3: Animal = {
+    ...animal1,
+
+    animalId: 'id3',
+    label: 'animale3',
+    notes: 'note3',
+}
+const animal4: Animal = {
+    ...animal1,
+
+    animalId: 'id4',
+    label: 'animale4',
+    notes: 'note4',
+}
+const animal5: Animal = {
+    ...animal1,
+
+    animalId: 'id5',
+    label: 'animale5',
+    notes: 'note5',
+}
+const animal6: Animal = {
+    ...animal1,
+
+    animalId: 'id6',
+    label: 'animale6',
+    notes: 'note6',
+}
+
+const animal7: Animal = {
+    ...animal1,
+
+    animalId: 'id7',
+    label: 'animale7',
+    notes: 'note7',
+}
+
+
+const animal8: Animal = {
+    ...animal1,
+
+    animalId: 'id8',
+    label: 'animale8',
+    notes: 'note8',
+}
+
+
+const group1: Group = {
+    animals: [animal1, animal2, animal3, animal4, animal5, animal6, animal7, animal8],
+    groupId: 'id1',
+    label: '1',
+}
+
+const group2: Group = {
+    animals: [],
+    groupId: 'id2',
+    label: '2',
+}
+
+const group3: Group = {
+    animals: [],
+    groupId: 'id3',
+    label: '3',
 }
 
 class Db {
@@ -185,7 +268,7 @@ class Db {
 
     getSessionsByCompanyId = (companyId: string): SessionItem[] => {
         // todo
-        return [session1, session2, session3];
+        return [session1, session2, session3, session1, session2, session3, session1, session2, session3];
     }
 
     getSessionById = (sessionId: string): Session => {
@@ -203,8 +286,7 @@ class Db {
     }
 
     getGroupsBySessionId = (sessionId: string): Group[] => {
-        // todo
-        return []
+        return [group1, group2, group3];
     }
 
     createAnimal = (animal: CreateAnimalInput): string => {

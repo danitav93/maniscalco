@@ -1,6 +1,7 @@
 import React, {FC, useCallback, useEffect} from "react";
-import { useFormContext} from "react-hook-form";
+import {useFormContext} from "react-hook-form";
 import {Icon, Input, withTheme} from "react-native-elements";
+import {View, ViewStyle} from "react-native";
 
 interface Props {
     placeholder?: string;
@@ -9,6 +10,8 @@ interface Props {
         name: string;
         type?: string;
     };
+    numeric?: boolean;
+    style?: ViewStyle
 }
 
 const UncontrolledInput: FC<Props> = (props) => {
@@ -27,19 +30,22 @@ const UncontrolledInput: FC<Props> = (props) => {
     }, [setValue])
 
     return (
-        <Input
-            placeholder={props.placeholder}
-            leftIcon={props.leftIcon ?
-                <Icon
-                    name={props.leftIcon.name}
-                    size={24}
-                    color={props.theme.colors.primary}
-                    type={props.leftIcon.type}
-                /> : undefined
-            }
-            onChange={onTextChange}
-            errorMessage={errors[props.name]?.message}
-        />)
+        <View style={props.style ?? {width: '100%'}}>
+            <Input
+                placeholder={props.placeholder}
+                leftIcon={props.leftIcon ?
+                    <Icon
+                        name={props.leftIcon.name}
+                        size={24}
+                        color={props.theme.colors.primary}
+                        type={props.leftIcon.type}
+                    /> : undefined
+                }
+                onChange={onTextChange}
+                errorMessage={errors[props.name]?.message}
+                keyboardType={props.numeric ? "numeric" : "default"}
+            />
+        </View>)
 
 }
 

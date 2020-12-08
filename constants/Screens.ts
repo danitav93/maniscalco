@@ -1,5 +1,10 @@
 export type RootStackParamList = {
     CompanyList: undefined;
-    CompanyDetails: undefined
+    CompanyDetails: {
+        companyId: string
+    };
+    SessionDetails: {
+        sessionId: string
+    };
     NotFound: undefined;
 };

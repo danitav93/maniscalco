@@ -20,6 +20,7 @@ import ModalFooter from "../components/ui/Modal/ModalFooter";
 import {NavigationHandler} from "../navigation/NavigationService";
 import {Email} from "../components/ui/Email";
 import {PhoneNumber} from "../components/ui/PhoneNumber";
+import {FloatingCreateButton} from "../components/ui/FloatingButton";
 
 
 const filteredCompaniesSelector = (state: ReduxState) => state.companies.filteredCompanies;
@@ -101,13 +102,7 @@ const CompanyListScreen: FC = (props) => {
                         </Card>
                     </>
                 )}
-                <KeyboardAvoidingView behavior={'position'} style={styles.createButtonStyle}>
-                    <Button
-                        title={"Aggiungi nuova azienda"}
-                        titleStyle={{fontSize: 16}}
-                        onPress={openModal}
-                    />
-                </KeyboardAvoidingView>
+                <FloatingCreateButton onPress={openModal}  text={"Aggiungi nuova azienda"}/>
             </View>
             <Modal isOpen={isModalOpen}>
                 <ModalHeader title={"Aggiungi una nuova azienda"}/>

@@ -8,6 +8,7 @@ import CompanyListScreen from "../screens/CompanyListScreen";
 import {isReadyRef, navigationRef} from "./NavigationService";
 import CompanyDetailScreen from "../screens/CompanyDetailScreen";
 import {RootStackParamList} from "../constants/Screens";
+import SessionDetailScreen from "../screens/SessionDetailScreen";
 
 // If you are not familiar with React Navigation, we recommend going through the
 // "Fundamentals" guide: https://reactnavigation.org/docs/getting-started
@@ -36,6 +37,7 @@ function RootNavigator() {
             <Stack.Screen name="CompanyList" component={CompanyListScreen}/>
             <Stack.Screen name="NotFound" component={NotFoundScreen} options={{title: 'Oops!'}}/>
             <Stack.Screen name="CompanyDetails" component={CompanyDetailScreen}/>
+            <Stack.Screen name="SessionDetails" component={SessionDetailScreen}/>
         </Stack.Navigator>
     );
 }
