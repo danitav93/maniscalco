@@ -7,7 +7,7 @@ import * as FileSystem from 'expo-file-system';
 import {DB_NAME} from "../constants/db";
 
 
-const db = SQLite.openDatabase(DB_NAME);
+const db = SQLite.openDatabase(DB_NAME); 
 
 export default function useCachedResources() {
   const [isLoadingComplete, setLoadingComplete] = React.useState(false);
@@ -26,7 +26,7 @@ export default function useCachedResources() {
         // execute sql lite db scripts
         db.transaction(tx => {
           tx.executeSql(
-              "create table if not exists company (id integer primary key not null, name text not null, email text, phoneNumber text);"
+              "create table if not exists company (id integer primary key not null, name text not null unique, email text, phoneNumber text);"
           );
           tx.executeSql(
               "create table if not exists sessions (id integer primary key not null, idCompany text not null,date date not null, price integer," +

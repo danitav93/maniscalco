@@ -3,6 +3,7 @@ import {Alert} from 'react-native';
 import {DB_NAME} from "../constants/db";
 import { array } from 'yup';
 import CompanyDetailScreen from '../screens/CompanyDetailScreen';
+import { CompanyNameAlreadyExistsError } from '../errors/CompanyNameAlreadyExistsError';
 
 const sqlLite = SQLite.openDatabase(DB_NAME);
 
@@ -165,7 +166,12 @@ class Db {
                         },
                         (tx, error) => {
                             console.log(error);
-                            reject();
+                           if (error.message.includes("UNIQUE")){
+                              reject(new CompanyNameAlreadyExistsError());
+                           }
+                           else{
+                              reject();
+                           }
                             return false;
                         }
                     );
