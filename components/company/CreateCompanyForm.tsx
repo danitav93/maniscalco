@@ -1,10 +1,10 @@
-import React, {FC} from "react";
+import React from "react";
 import {StyleSheet, View} from "react-native";
 import {withTheme} from 'react-native-elements';
-import UncontrolledInput from "../ui/UncontrolledInput";
+import {UncontrolledInput} from "../ui/UncontrolledInput";
 
 
-const CreateCompanyForm: FC = (props) => {
+export const CreateCompanyForm = withTheme(()=> {
 
     return (<View style={styles.container}>
         <UncontrolledInput
@@ -28,7 +28,7 @@ const CreateCompanyForm: FC = (props) => {
             }}
         />
     </View>)
-}
+});
 
 
 const styles = StyleSheet.create({
@@ -39,6 +39,3 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
 });
-
-
-export default withTheme(CreateCompanyForm);

@@ -7,10 +7,11 @@ interface Props {
     data: any[];
     onChangeText: (input: string) => void;
     placeholder: string;
-    renderItem: FC<{item: any}>
+    renderItem: FC<{item: any}>;
+    keyExtractor: (item: any) => string;
 }
 
-export const Autocomplete: FC<Props> = ({value, data, onChangeText, placeholder, renderItem}) => {
+export const Autocomplete: FC<Props> = ({value, data, onChangeText, placeholder, renderItem, keyExtractor}) => {
 
 
 
@@ -24,6 +25,7 @@ export const Autocomplete: FC<Props> = ({value, data, onChangeText, placeholder,
         <FlatList
             data={data}
             renderItem={renderItem}
+            keyExtractor={keyExtractor}
         />
     </View>)
 

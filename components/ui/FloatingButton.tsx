@@ -1,5 +1,5 @@
 import {KeyboardAvoidingView, StyleSheet} from "react-native";
-import {Button, Icon, withTheme} from "react-native-elements";
+import {Button, withTheme} from "react-native-elements";
 import React from "react";
 
 interface FloatingButtonProps {
@@ -7,7 +7,7 @@ interface FloatingButtonProps {
     text?: string;
 }
 
-const Component = ({onPress, text}: FloatingButtonProps) => {
+export const FloatingCreateButton = withTheme(({onPress, text}: FloatingButtonProps) => {
     return (<KeyboardAvoidingView behavior={'position'} style={styles.buttonStyle}>
         <Button
             title={text}
@@ -15,7 +15,7 @@ const Component = ({onPress, text}: FloatingButtonProps) => {
             onPress={onPress}
         />
     </KeyboardAvoidingView>)
-}
+});
 const styles = StyleSheet.create({
     buttonStyle: {
         position: 'absolute',
@@ -23,5 +23,3 @@ const styles = StyleSheet.create({
         right: 20,
     }
 });
-
-export const FloatingCreateButton = withTheme(Component);

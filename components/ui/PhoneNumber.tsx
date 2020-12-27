@@ -1,8 +1,13 @@
-import React, {FC} from "react";
+import React from "react";
 import {Icon, Text, withTheme} from "react-native-elements";
 import {StyleSheet, View} from "react-native";
 
-const Component: FC<{ phone?: string, iconSize?: number }> = ({phone, iconSize = 20, theme}) => {
+interface PhoneNumberProps {
+    phone?: string;
+    iconSize?: number;
+}
+
+export const PhoneNumber = withTheme<PhoneNumberProps>(({phone, iconSize = 20, theme}) => {
     if (!phone) {
         return null;
     }
@@ -12,12 +17,12 @@ const Component: FC<{ phone?: string, iconSize?: number }> = ({phone, iconSize =
             reverse
             name='phone'
             type='font-awesome'
-            color={theme.colors.primary}
+            color={theme.colors!.primary}
             size={iconSize}
         />
         <Text>{phone}</Text>
     </View>);
-}
+});
 
 const styles = StyleSheet.create({
     container: {
@@ -26,5 +31,3 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
 });
-
-export const PhoneNumber = withTheme(Component);

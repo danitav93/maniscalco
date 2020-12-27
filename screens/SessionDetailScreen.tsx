@@ -5,22 +5,14 @@ import {Company, Session} from "../dbApi";
 import {StyleSheet, View} from "react-native";
 import {Text} from "react-native-elements";
 import {PageLoader} from "../components/ui/PageLoader";
-import {ReduxState} from "../redux/reducer";
-import {createSelector} from 'reselect'
 import {loadSessionGroups} from "../redux/events";
-import {clearSessionGroups} from "../redux/action";
 import {RootStackParamList} from "../constants/Screens";
 import ViewPager from '@react-native-community/viewpager';
 import {GroupHeader} from "../components/group/GroupHeader";
 import {GroupContent} from "../components/group/GroupContent";
-
-
-const companyDetailSelector = (state: ReduxState) => state.companies.companyDetail.company;
-const getSessionDetailSelector = (sessionID: string) => createSelector(
-    (state: ReduxState) => state.companies.companyDetail.sessions,
-    sessions => sessions.find(session => session.sessionId === sessionID)
-);
-const sessionGroupsSelector = (state: ReduxState) => state.sessionDetail.groups;
+import {getSessionDetailSelector, sessionGroupsSelector} from "../redux/selectors/session.selector";
+import {clearSessionGroups} from "../redux/actions";
+import {companyDetailSelector} from "../redux/selectors/company.selector";
 
 const SessionDetailScreen = () => {
 
@@ -48,7 +40,6 @@ const SessionDetailScreen = () => {
     if (!groups.length) {
         return <PageLoader/>;
     }
-
     return (
         <View style={styles.container}>
             <View style={styles.resumeContainer}>
@@ -61,7 +52,7 @@ const SessionDetailScreen = () => {
                     <View key={group.groupId}>
                         <GroupHeader hideLeft={idx === 0} hideRight={idx === groups.length - 1} label={group.label}
                                      numberOfAnimals={group.animals.length}/>
-                        <GroupContent animals={group.animals}/>
+                        <GroupContent animals={group.animals} groupId={group.groupId}/>
                     </View>
                 ))}
 

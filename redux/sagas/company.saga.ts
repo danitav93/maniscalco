@@ -1,6 +1,8 @@
 import {Events, LoadCompanyDetails, UserChangedSearchCompanyFilter, UserSubmittedNewCompany} from "../events";
-import {all, call, fork, put, takeLatest, delay} from "redux-saga/effects";
+import {all, call, fork, put, takeLatest} from "redux-saga/effects";
 import {Company, db, Session} from "../../dbApi";
+import {CompanyNameAlreadyExistsError} from "../../errors/CompanyNameAlreadyExistsError";
+import {NavigationHandler} from "../../navigation/NavigationService";
 import {
     closeModal,
     companyDetailLoaded,
@@ -8,9 +10,7 @@ import {
     companySessionsLoaded,
     filteredCompaniesLoaded,
     genericError
-} from "../action";
-import {CompanyNameAlreadyExistsError} from "../../errors/CompanyNameAlreadyExistsError";
-import {NavigationHandler} from "../../navigation/NavigationService";
+} from "../actions";
 
 
 function* loadFilteredCompaniesSaga(event: UserChangedSearchCompanyFilter) {
@@ -24,7 +24,6 @@ function* watchLoadFilteredCompanies() {
 
 function* loadCompanyDetailSaga(event: LoadCompanyDetails) {
     const [company, sessions]: [Company, Session[]] = yield all([call(db.getCompanyById, event.payload), call(db.getSessionsByCompanyId, event.payload)])
-    yield delay(2000);
     yield put(companyDetailLoaded(company));
     yield put(companySessionsLoaded(sessions));
 }
@@ -48,6 +47,7 @@ function* createCompanySaga(event: UserSubmittedNewCompany) {
         }
     }
 }
+
 function* watchCreateCompanySaga() {
     yield takeLatest(Events.userSubmittedNewCompany, createCompanySaga);
 }

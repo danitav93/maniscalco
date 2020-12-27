@@ -1,39 +1,29 @@
 import React from 'react'
 import {StyleSheet, View} from "react-native";
-import {Text, withTheme} from "react-native-elements";
+import {FullTheme, Text, withTheme} from "react-native-elements";
 import {Cure, Disease} from "../../dbApi";
 import {emptyValue} from "../../utils/formatEmptyValue";
+import {CureStringMap, DiseaseStringMap} from "../../utils/stringsMaps";
 
 interface CureAndIllnessColumnProps {
     disease: Disease | null;
     cure: Cure | null;
 }
 
-const DiseaseStringMap: { [key in Disease]: string } = {
-    [Disease.DERMATITE_DIGITALE]: 'Derm. digitale',
-    [Disease.DERMATITE_INTERFIGITALE]: 'Derm. interfigitale',
-    [Disease.FLEMMONE_INTERDIGITALE]: 'Derm. interdigitale',
-    [Disease.LAMINITE]: 'Laminite',
-    [Disease.ULCERA_SOLEARE]: 'Ulcera soleare'
-}
 
-const CureStringMap: { [key in Cure]: string } = {
-    [Cure.FASCIATURA]: 'Fasciatura',
-}
-
-const Component = ({theme, disease, cure}: CureAndIllnessColumnProps) => {
+export const CureAndDiseaseColumn = withTheme<CureAndIllnessColumnProps>(({theme, disease, cure}) => {
     const styles = getStyles(theme);
     return (<View style={styles.container}>
         <Text style={{...styles.diseaseText, flex: 1}}>
-            {disease!=null ? DiseaseStringMap[disease] : emptyValue}
+            {disease != null ? DiseaseStringMap[disease] : emptyValue}
         </Text>
-        { cure!=null && (<Text style={{...styles.cureText, flex: 1}}>
+        {cure != null && (<Text style={{...styles.cureText, flex: 1}}>
             {CureStringMap[cure]}
         </Text>)}
     </View>);
-};
+});
 
-const getStyles = (theme) => StyleSheet.create({
+const getStyles = (theme: Partial<FullTheme>) => StyleSheet.create({
     container: {
         flex: 2,
         display: 'flex',
@@ -43,8 +33,6 @@ const getStyles = (theme) => StyleSheet.create({
     },
     cureText: {
         fontSize: 12,
-        color: theme.colors.grey2
+        color: theme.colors!.grey2
     }
 });
-
-export const CureAndDiseaseColumn = withTheme(Component);

@@ -1,11 +1,14 @@
 import React, {FC} from "react";
-import {StyleSheet, View} from "react-native";
+import {StyleSheet, View, ViewStyle} from "react-native";
 
+interface ModalBodyProps {
+    style?: ViewStyle;
+}
 
-export const ModalBody: FC = ({children}) => {
+export const ModalBody: FC<ModalBodyProps> = ({style = {}, children}) => {
 
     return (
-        <View style={styles.container}>
+        <View style={{...styles.container,...style}}>
             {children}
         </View>);
 
@@ -14,7 +17,5 @@ export const ModalBody: FC = ({children}) => {
 const styles = StyleSheet.create({
     container: {
         display: 'flex',
-        paddingTop: 30,
-        paddingBottom: 30
     },
 });

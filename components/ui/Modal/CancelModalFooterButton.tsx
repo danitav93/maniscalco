@@ -4,9 +4,10 @@ import {Button} from "react-native-elements";
 interface Props {
     onClose: () => void;
     title?: string;
+    disabled?: boolean;
 }
 
-export const CancelModalFooterButton: FC<Props> = ({title = "Annulla", onClose}) => {
+export const CancelModalFooterButton: FC<Props> = ({title = "Annulla", onClose, disabled}) => {
 
     return (
         <Button
@@ -15,6 +16,7 @@ export const CancelModalFooterButton: FC<Props> = ({title = "Annulla", onClose})
             containerStyle={{width: 150}}
             type={"clear"}
             onPress={onClose}
+            disabled={disabled}
         />)
 
 }

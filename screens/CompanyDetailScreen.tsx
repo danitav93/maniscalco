@@ -1,7 +1,6 @@
 import {FlatList, StyleSheet, TouchableOpacity, View} from 'react-native';
 import React, {FC, useCallback, useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {ReduxState} from "../redux/reducer";
 import {RouteProp, useRoute} from '@react-navigation/native';
 import {Company, CreateSessionInput, Session} from "../dbApi";
 import {loadCompanyDetails, userSubmittedNewSession} from "../redux/events";
@@ -10,24 +9,21 @@ import {PageLoader} from "../components/ui/PageLoader";
 import {Email} from "../components/ui/Email";
 import {PhoneNumber} from "../components/ui/PhoneNumber";
 import {RootStackParamList} from "../constants/Screens";
-import {clearCompanyDetails} from "../redux/action";
 import {NavigationHandler} from "../navigation/NavigationService";
 import {FloatingCreateButton} from "../components/ui/FloatingButton";
-import {useModal} from "../hooks/useModal";
 import {Modal} from "../components/ui/Modal/Modal";
 import {ModalHeader} from "../components/ui/Modal/ModalHeader";
 import {ModalBody} from "../components/ui/Modal/ModalBody";
 import {FormProvider, useForm} from "react-hook-form";
-import ModalFooter from "../components/ui/Modal/ModalFooter";
 import {CancelModalFooterButton} from "../components/ui/Modal/CancelModalFooterButton";
 import {SubmitModalFooterButton} from "../components/ui/Modal/SubmitModalButton";
 import {yupResolver} from "@hookform/resolvers";
 import {sessionSchema} from "../schemas/company";
-import CreateSessionForm from "../components/session/CreateSessionForm";
-
-
-const companyDetailSelector = (state: ReduxState) => state.companies.companyDetail.company;
-const companySessionsSelector = (state: ReduxState) => state.companies.companyDetail.sessions;
+import {useCreateSessionModal} from "../hooks/useCreateSessionModal";
+import {ModalFooter} from "../components/ui/Modal/ModalFooter";
+import {CreateSessionForm} from "../components/session/CreateSessionForm";
+import {clearCompanyDetails} from "../redux/actions";
+import {companyDetailSelector, companySessionsSelector} from "../redux/selectors/company.selector";
 
 
 const CompanyDetailScreen: FC = () => {
@@ -52,7 +48,7 @@ const CompanyDetailScreen: FC = () => {
     }, [])
 
     const RenderItem = useCallback(({item}: { item: Session }) => (
-        <TouchableOpacity onPress={onSessionSelected(item)}>
+        <TouchableOpacity key={item.sessionId} onPress={onSessionSelected(item)}>
             <ListItem style={{padding: StyleSheet.hairlineWidth}} bottomDivider>
                 <ListItem.Content>
                     <ListItem.Title>{item.date}</ListItem.Title>
@@ -65,7 +61,7 @@ const CompanyDetailScreen: FC = () => {
 
     const {
         isModalOpen, closeModal, openModal
-    } = useModal();
+    } = useCreateSessionModal();
 
     const methods = useForm({
         mode: "onSubmit",

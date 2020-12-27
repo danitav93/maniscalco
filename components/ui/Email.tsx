@@ -1,8 +1,11 @@
-import React, {FC} from "react";
+import React from "react";
 import {Icon, Text, withTheme} from "react-native-elements";
 import {StyleSheet, View} from "react-native";
-
-const Component: FC<{ email?: string, iconSize?: number }> = ({email, iconSize= 20, theme}) => {
+interface EmailProps {
+    email?: string;
+    iconSize?: number
+}
+export const Email = withTheme<EmailProps>(({email, iconSize= 20, theme}) => {
     if (!email) {
         return null;
     }
@@ -12,12 +15,12 @@ const Component: FC<{ email?: string, iconSize?: number }> = ({email, iconSize= 
             reverse
             name='envelope'
             type='font-awesome'
-            color={theme.colors.primary}
+            color={theme.colors!.primary}
             size={iconSize}
         />
         <Text>{email}</Text>
     </View>);
-}
+});
 
 const styles = StyleSheet.create({
     container: {
@@ -26,5 +29,3 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
 });
-
-export const Email = withTheme(Component);

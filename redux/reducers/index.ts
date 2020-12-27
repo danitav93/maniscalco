@@ -1,11 +1,12 @@
 import {combineReducers} from "redux";
-import companyReducer from "./company";
-import modalReducer from "./modal";
-import sessionReducer from "./session";
+import {companyReducer} from "./company.reducer";
+import {animalReducer} from "./animal.reducer";
+import {sessionReducer} from "./session.reducer";
+
 
 const rootReducer = combineReducers({
     companies: companyReducer,
-    modal: modalReducer,
+    animal: animalReducer,
     sessionDetail: sessionReducer,
 });
 

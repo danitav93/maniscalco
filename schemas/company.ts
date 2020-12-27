@@ -20,3 +20,9 @@ export const sessionSchema = yup.object().shape({
     date: yup.string().required(),
     price: yup.number().required().typeError('Numero non valido'),
 });
+
+export const animalSchema = yup.object().shape({
+    label: yup.string().required(),
+})
+
+export type AnimalSchemaType = yup.InferType<typeof animalSchema>;

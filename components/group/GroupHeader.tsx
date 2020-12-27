@@ -1,6 +1,6 @@
 import React from 'react'
 import {StyleSheet, View} from "react-native";
-import {Icon, Text, withTheme} from "react-native-elements";
+import {FullTheme, Icon, Text, withTheme} from "react-native-elements";
 
 interface GroupHeaderProps {
     hideLeft?: boolean;
@@ -9,14 +9,14 @@ interface GroupHeaderProps {
     numberOfAnimals: number;
 }
 
-const Component = ({label, numberOfAnimals, hideLeft = false, hideRight = false, theme}: GroupHeaderProps) => {
+export const GroupHeader = withTheme<GroupHeaderProps>(({label, numberOfAnimals, hideLeft = false, hideRight = false, theme}) => {
     const styles = getStyles(theme);
     return (<View style={styles.container}>
         <View>
             {!hideLeft && <Icon
                 name='arrow-left'
                 type='font-awesome'
-                color={theme.colors.primary}
+                color={theme.colors!.primary}
                 size={32}
             />}
         </View>
@@ -25,21 +25,21 @@ const Component = ({label, numberOfAnimals, hideLeft = false, hideRight = false,
             {!hideRight && <Icon
                 name='arrow-right'
                 type='font-awesome'
-                color={theme.colors.primary}
+                color={theme.colors!.primary}
                 size={32}
             />}
         </View>
     </View>);
-}
+});
 
-const getStyles = (theme) => StyleSheet.create({
+const getStyles = (theme: Partial<FullTheme>) => StyleSheet.create({
     container: {
         width: '100%',
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-between',
         borderWidth: 1,
-        borderColor: theme.colors.black,
+        borderColor: theme.colors!.grey0,
         alignItems: 'center',
         padding: 10
     },
@@ -47,5 +47,3 @@ const getStyles = (theme) => StyleSheet.create({
         fontWeight: 'bold'
     }
 });
-
-export const GroupHeader = withTheme(Component);

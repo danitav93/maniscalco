@@ -1,28 +1,13 @@
-import React, {FC} from "react";
+import React from "react";
 import {StyleSheet, View} from "react-native";
-import {useSelector} from "react-redux";
-import {ReduxState} from "../../../redux/reducer";
-import {Button, Text, withTheme} from "react-native-elements";
+import { withTheme} from "react-native-elements";
 
-const modalErrorSelector = (state: ReduxState) => state.modal.errorMessage;
-const modalIsLoadingSelector = (state: ReduxState) => state.modal.isLoading;
-
-
-const ModalFooter: FC = (props) => {
-
-    const errorMessage = useSelector(modalErrorSelector);
-    const isLoading = useSelector(modalIsLoadingSelector);
-
+export const ModalFooter = withTheme(({theme, children}) => {
     return (
         <View style={styles.container}>
-            {!isLoading ? (<>{errorMessage && (<Text style={{color: props.theme.colors.error}}>
-                {errorMessage}
-            </Text>)}
-                {props.children}</>) : (<Button loading={isLoading} type={"clear"}/>)}
-
-        </View>);
-
-}
+                {children}
+        </View>)
+});
 
 const styles = StyleSheet.create({
     container: {
@@ -32,5 +17,3 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
 });
-
-export default withTheme(ModalFooter)

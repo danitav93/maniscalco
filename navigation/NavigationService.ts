@@ -13,14 +13,27 @@ function navigate(name: string, params: object) {
     }
 }
 
+function goBack() {
+    if (isReadyRef.current && navigationRef.current) {
+        navigationRef.current.goBack();
+    } else {
+        console.error("App is not mounted yet")
+    }
+}
+
 export const NavigationHandler = {
 
+    goBack: () => {
+        goBack();
+    },
     navigateToCompanyDetails: (companyId: string) => {
         navigate('CompanyDetails', {companyId});
     },
     navigateToSessionDetails: (sessionId: string) => {
         navigate('SessionDetails', {sessionId});
+    },
+    navigateToEditAnimal: (sessionId: string, animalId: string) => {
+        navigate('EditAnimal', {sessionId, animalId});
     }
-
 
 }

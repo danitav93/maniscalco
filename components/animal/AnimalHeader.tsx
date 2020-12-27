@@ -1,8 +1,8 @@
 import React from 'react'
 import {StyleSheet, View} from "react-native";
-import {Text, withTheme} from "react-native-elements";
+import {FullTheme, Text, withTheme} from "react-native-elements";
 
-const Component = ({theme}) => {
+export const AnimalHeader = withTheme(({theme}) => {
     const styles = getStyles(theme);
 
 
@@ -28,9 +28,9 @@ const Component = ({theme}) => {
         <Text style={{...styles.headerLabel, flex: 1}}>
         </Text>
     </View>);
-};
+});
 
-const getStyles = (theme) => StyleSheet.create({
+const getStyles = (_theme: Partial<FullTheme>) => StyleSheet.create({
     container: {
         width: '100%',
         display: "flex",
@@ -43,5 +43,3 @@ const getStyles = (theme) => StyleSheet.create({
         fontWeight: 'bold',
     },
 });
-
-export const AnimalHeader = withTheme(Component);

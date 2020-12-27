@@ -1,32 +1,29 @@
-import {KeyboardAvoidingView, StyleSheet, TouchableOpacity, View} from 'react-native';
+import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import React, {FC, useCallback, useMemo, useState} from "react";
 import {Company} from "../dbApi";
-import {ReduxState} from "../redux/reducer";
 import {useDispatch, useSelector} from "react-redux";
 import {Button, Card, ListItem, withTheme} from 'react-native-elements';
 import {Autocomplete} from "../components/ui/Autocomplete";
-import CreateCompanyForm from "../components/company/CreateCompanyForm";
 import {Modal} from "../components/ui/Modal/Modal";
 import {ModalHeader} from "../components/ui/Modal/ModalHeader";
 import {ModalBody} from "../components/ui/Modal/ModalBody";
 import {CancelModalFooterButton} from "../components/ui/Modal/CancelModalFooterButton";
 import {SubmitModalFooterButton} from "../components/ui/Modal/SubmitModalButton";
-import {useModal} from "../hooks/useModal";
 import {FormProvider, useForm} from "react-hook-form";
 import {yupResolver} from '@hookform/resolvers';
 import {companySchema} from "../schemas/company";
-import {userChangedSearchCompanyFilter, userSubmittedNewCompany} from "../redux/events";
-import ModalFooter from "../components/ui/Modal/ModalFooter";
+import {userChangedSearchCompanyFilter} from "../redux/events";
 import {NavigationHandler} from "../navigation/NavigationService";
 import {Email} from "../components/ui/Email";
 import {PhoneNumber} from "../components/ui/PhoneNumber";
 import {FloatingCreateButton} from "../components/ui/FloatingButton";
+import {useCreateCompanyModal} from "../hooks/useCreateCompanyModal";
+import {ModalFooter} from "../components/ui/Modal/ModalFooter";
+import {CreateCompanyForm} from "../components/company/CreateCompanyForm";
+import {filteredCompaniesSelector} from "../redux/selectors/company.selector";
 
 
-const filteredCompaniesSelector = (state: ReduxState) => state.companies.filteredCompanies;
-
-
-const CompanyListScreen: FC = (props) => {
+const CompanyListScreen: FC = () => {
 
 
     const [selectedCompany, setSelectedCompany] = useState<Company | undefined>();
@@ -56,7 +53,7 @@ const CompanyListScreen: FC = (props) => {
     }, [selectedCompany])
 
     const RenderItem = useCallback(({item}: { item: Company }) => (
-        <TouchableOpacity onPress={onItemSelected(item)}>
+        <TouchableOpacity onPress={onItemSelected(item)} key={item.companyId}>
             <ListItem key={item.companyId} bottomDivider>
                 <ListItem.Content>
                     <ListItem.Title>{item.name}</ListItem.Title>
@@ -68,17 +65,13 @@ const CompanyListScreen: FC = (props) => {
 
 
     const {
-        isModalOpen, closeModal, openModal
-    } = useModal();
+        isOpen, createCompany, closeModal, openModal, isLoading
+    } = useCreateCompanyModal();
 
     const methods = useForm({
         mode: "onSubmit",
         resolver: yupResolver(companySchema),
     });
-
-    const createCompany = useCallback((data) => {
-        dispatch(userSubmittedNewCompany(data))
-    }, [dispatch])
 
 
     return (
@@ -90,6 +83,7 @@ const CompanyListScreen: FC = (props) => {
                     renderItem={RenderItem}
                     value={query}
                     placeholder={"Cerca una azienda"}
+                    keyExtractor={(company) => company.companyId}
                 />
                 {selectedCompany && (
                     <>
@@ -102,9 +96,9 @@ const CompanyListScreen: FC = (props) => {
                         </Card>
                     </>
                 )}
-                <FloatingCreateButton onPress={openModal}  text={"Aggiungi nuova azienda"}/>
+                <FloatingCreateButton onPress={openModal} text={"Aggiungi nuova azienda"}/>
             </View>
-            <Modal isOpen={isModalOpen}>
+            <Modal isOpen={isOpen}>
                 <ModalHeader title={"Aggiungi una nuova azienda"}/>
                 <ModalBody>
                     <FormProvider {...methods} >
@@ -112,8 +106,8 @@ const CompanyListScreen: FC = (props) => {
                     </FormProvider>
                 </ModalBody>
                 <ModalFooter>
-                    <CancelModalFooterButton onClose={closeModal}/>
-                    <SubmitModalFooterButton onSubmit={methods.handleSubmit(createCompany)}/>
+                    <CancelModalFooterButton onClose={closeModal} disabled={isLoading}/>
+                    <SubmitModalFooterButton onSubmit={methods.handleSubmit(createCompany)} loading={isLoading}/>
                 </ModalFooter>
             </Modal>
         </>

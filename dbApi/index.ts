@@ -65,17 +65,18 @@ export interface CreateAnimalInput {
 }
 
 export interface UpdateAnimalInput {
+    groupId: string;
     animalId: string;
     label: string;
     notes?: string;
-    frontLeftDisease?: Disease;
-    frontRightDisease?: Disease;
-    rearLeftDisease?: Disease;
-    rearRightDisease?: Disease;
-    frontLeftCure?: Cure;
-    frontRightCure?: Cure;
-    rearLeftCure?: Cure;
-    rearRightCure?: Cure;
+    frontLeftDisease: Disease | null;
+    frontRightDisease: Disease | null;
+    rearLeftDisease: Disease | null;
+    rearRightDisease: Disease | null;
+    frontLeftCure: Cure | null;
+    frontRightCure: Cure | null;
+    rearLeftCure: Cure | null;
+    rearRightCure: Cure | null;
 }
 
 export interface Animal {
@@ -101,7 +102,8 @@ export enum Disease {
 }
 
 export enum Cure {
-    FASCIATURA
+    FASCIATURA,
+    SOLETTA,
 }
 
 //todo remove, these are just stub data
@@ -142,7 +144,7 @@ const animal1: Animal = {
     frontLeftDisease: Disease.DERMATITE_DIGITALE,
     frontRightDisease: Disease.DERMATITE_INTERFIGITALE,
     frontRightCure: Cure.FASCIATURA,
-    rearRightCure: Cure.FASCIATURA,
+    rearRightCure: Cure.SOLETTA,
     rearRightDisease: Disease.DERMATITE_INTERFIGITALE,
     frontLeftCure: null,
 }
@@ -268,7 +270,7 @@ class Db {
 
     getSessionsByCompanyId = (companyId: string): SessionItem[] => {
         // todo
-        return [session1, session2, session3, session1, session2, session3, session1, session2, session3];
+        return [session1, session2, session3];
     }
 
     getSessionById = (sessionId: string): Session => {
@@ -296,6 +298,11 @@ class Db {
 
     updateAnimal = (animal: UpdateAnimalInput): void => {
         // todo
+        return;
+    }
+
+    deleteAnimal = (animalId: string): void => {
+        //todo
         return;
     }
 

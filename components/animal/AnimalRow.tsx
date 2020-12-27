@@ -1,15 +1,23 @@
 import React from 'react'
 import {StyleSheet, View} from "react-native";
-import {Icon, Text, withTheme} from "react-native-elements";
+import {FullTheme, Icon, Text, withTheme} from "react-native-elements";
 import {Animal} from "../../dbApi";
 import {CureAndDiseaseColumn} from "./CureAndDiseaseColumn";
+import {useAnimalModals} from "../../hooks/useAnimalModals";
+import {useEditAnimal} from "../../hooks/useEditAnimal";
+import {AnimalsModal} from "../../redux/reducers/animal.reducer";
 
 interface AnimalRowProps {
     animal: Animal;
+    groupId: string;
 }
 
-const Component = ({animal, theme}: AnimalRowProps) => {
+export const AnimalRow = withTheme<AnimalRowProps>(({animal, groupId, theme}) => {
     const styles = getStyles(theme);
+
+    const {openModal} = useAnimalModals();
+
+    const {navigateToEditAnimal} = useEditAnimal();
 
     return (<View style={styles.container}>
         <Text style={{...styles.rowLabel, flex: 1}}>
@@ -19,13 +27,14 @@ const Component = ({animal, theme}: AnimalRowProps) => {
         <CureAndDiseaseColumn cure={animal.frontRightCure} disease={animal.frontRightDisease}/>
         <CureAndDiseaseColumn cure={animal.rearLeftCure} disease={animal.rearLeftDisease}/>
         <CureAndDiseaseColumn cure={animal.rearRightCure} disease={animal.rearRightDisease}/>
-        <View style={{ flex: 1}}>
+        <View style={{flex: 1}}>
             <Icon
                 reverse
                 name='sticky-note'
                 type='font-awesome'
-                color={theme.colors.grey0}
+                color={theme.colors!.grey0}
                 size={10}
+                onPress={openModal(AnimalsModal.ANIMAL_NOTE, animal, groupId)}
             />
         </View>
         <View style={styles.actionsContainer}>
@@ -33,21 +42,23 @@ const Component = ({animal, theme}: AnimalRowProps) => {
                 reverse
                 name='edit'
                 type='font-awesome'
-                color={theme.colors.primary}
+                color={theme.colors!.primary}
                 size={10}
+                onPress={navigateToEditAnimal(animal, groupId)}
             />
             <Icon
                 reverse
                 name='trash'
                 type='font-awesome'
-                color={theme.colors.error}
+                color={theme.colors!.error}
                 size={10}
+                onPress={openModal(AnimalsModal.DELETE_ANIMAL, animal, groupId)}
             />
         </View>
     </View>);
-};
+});
 
-const getStyles = (theme) => StyleSheet.create({
+const getStyles = (_theme: Partial<FullTheme>) => StyleSheet.create({
     container: {
         width: '100%',
         display: "flex",
@@ -58,10 +69,8 @@ const getStyles = (theme) => StyleSheet.create({
     },
     rowLabel: {},
     actionsContainer: {
-        flex:1,
+        flex: 1,
         display: "flex",
         flexDirection: "row",
     }
 });
-
-export const AnimalRow = withTheme(Component);

@@ -1,12 +1,12 @@
 import React, {useEffect} from "react";
 import {StyleSheet, View} from "react-native";
-import {withTheme} from 'react-native-elements';
-import UncontrolledInput from "../ui/UncontrolledInput";
 import {useFormContext} from "react-hook-form";
 import DatePicker from 'react-native-datepicker';
+import {withTheme} from "react-native-elements";
+import {UncontrolledInput} from "../ui/UncontrolledInput";
 
 
-const Component = (props) => {
+export const CreateSessionForm = withTheme(({theme}) => {
 
     const {register, unregister, watch, setValue, errors} = useFormContext<{ date: string }>();
 
@@ -39,7 +39,7 @@ const Component = (props) => {
                 },
                 dateInput: {
                     marginLeft: 36,
-                    ...errors.date ? {borderColor: props.theme.colors.error} : {}
+                    ...errors.date ? {borderColor: theme.colors!.error} : {}
                 }
             }}
             onDateChange={onDateChange}
@@ -52,7 +52,7 @@ const Component = (props) => {
             numeric
         />
     </View>)
-}
+});
 
 
 const styles = StyleSheet.create({
@@ -67,6 +67,3 @@ const styles = StyleSheet.create({
         alignSelf: "stretch"
     }
 });
-
-
-export default withTheme(Component);

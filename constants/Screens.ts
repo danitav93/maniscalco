@@ -6,5 +6,9 @@ export type RootStackParamList = {
     SessionDetails: {
         sessionId: string
     };
+    EditAnimal: {
+        sessionId: string,
+        animalIId: string
+    },
     NotFound: undefined;
 };
