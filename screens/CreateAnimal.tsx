@@ -8,11 +8,11 @@ import {ModalFooter} from "../components/ui/Modal/ModalFooter";
 import {CancelModalFooterButton} from "../components/ui/Modal/CancelModalFooterButton";
 import {SubmitModalFooterButton} from "../components/ui/Modal/SubmitModalButton";
 import {Cure, Disease} from "../dbApi";
-import {useEditAnimal} from "../hooks/useEditAnimal";
 import {KeyboardAvoidingView, StyleSheet, View} from "react-native";
+import {useCreateAnimal} from "../hooks/useCreateAnimal";
 
 export interface AnimalForm {
-    label: string;
+    label?: string;
     frontLeftDisease?: Disease | null,
     frontLeftCure?: Cure | null
     frontRightDisease?: Disease | null,
@@ -23,23 +23,15 @@ export interface AnimalForm {
     rearRightCure?: Cure | null,
 }
 
-export const EditAnimal = withTheme(({theme}) => {
+export const CreateAnimal = withTheme(({theme}) => {
 
-    const {animal, loading, goBack, editAnimal} = useEditAnimal();
+    const { loading, goBack, defaultAnimalLabel, createAnimal} = useCreateAnimal();
 
     const methods = useForm<AnimalForm>({
         mode: "onSubmit",
         resolver: yupResolver(animalSchema),
         defaultValues: {
-            label: animal?.label,
-            frontLeftDisease: animal?.frontLeftDisease,
-            frontLeftCure: animal?.frontLeftCure,
-            frontRightCure: animal?.rearRightCure,
-            frontRightDisease: animal?.frontRightDisease,
-            rearLeftCure: animal?.rearLeftCure,
-            rearLeftDisease: animal?.rearLeftDisease,
-            rearRightCure: animal?.rearRightCure,
-            rearRightDisease: animal?.rearRightDisease
+            label: defaultAnimalLabel,
         }
     });
 
@@ -52,7 +44,7 @@ export const EditAnimal = withTheme(({theme}) => {
             <KeyboardAvoidingView behavior={'position'} style={styles.buttonsStyle}>
                 <ModalFooter>
                     <CancelModalFooterButton onClose={goBack} disabled={loading}/>
-                    <SubmitModalFooterButton onSubmit={methods.handleSubmit(editAnimal)} title={"Salva"}
+                    <SubmitModalFooterButton onSubmit={methods.handleSubmit(createAnimal)} title={"Salva"}
                                              loading={loading}/>
                 </ModalFooter>
             </KeyboardAvoidingView>

@@ -34,6 +34,8 @@ export const NavigationHandler = {
     },
     navigateToEditAnimal: (sessionId: string, animalId: string) => {
         navigate('EditAnimal', {sessionId, animalId});
+    },
+    navigateToCreateAnimal: (sessionId: string, groupId: string) => {
+        navigate('CreateAnimal', {sessionId, groupId});
     }
-
 }

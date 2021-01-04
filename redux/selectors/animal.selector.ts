@@ -1,4 +1,8 @@
 import {ReduxState} from "../reducers";
+import {createSelector} from "reselect";
 
-export const editAnimalSelector = (state: ReduxState) => state.animal.editAnimal
-export const animalModalSelector = (state: ReduxState) => state.animal.animalModal;
+const animalSelector = (state: ReduxState) => state.animal;
+
+export const editAnimalSelector = createSelector(animalSelector, animal => animal.editAnimal);
+export const animalModalSelector = createSelector(animalSelector, animal => animal.animalModal);
+export const createAnimalSelector = createSelector(animalSelector, animal => animal.createAnimal);

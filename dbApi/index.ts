@@ -52,6 +52,8 @@ export interface Group {
 }
 
 export interface CreateAnimalInput {
+    sessionId: string;
+    groupId: string;
     label: string;
     notes?: string;
     frontLeftDisease?: Disease;
@@ -83,14 +85,14 @@ export interface Animal {
     animalId: string;
     label: string;
     notes?: string;
-    frontLeftDisease: Disease | null;
-    frontRightDisease: Disease | null;
-    rearLeftDisease: Disease | null;
-    rearRightDisease: Disease | null;
-    frontLeftCure: Cure | null;
-    frontRightCure: Cure | null;
-    rearLeftCure: Cure | null;
-    rearRightCure: Cure | null;
+    frontLeftDisease?: Disease;
+    frontRightDisease?: Disease;
+    rearLeftDisease?: Disease;
+    rearRightDisease?: Disease;
+    frontLeftCure?: Cure;
+    frontRightCure?: Cure;
+    rearLeftCure?: Cure;
+    rearRightCure?: Cure;
 }
 
 export enum Disease {
@@ -146,7 +148,7 @@ const animal1: Animal = {
     frontRightCure: Cure.FASCIATURA,
     rearRightCure: Cure.SOLETTA,
     rearRightDisease: Disease.DERMATITE_INTERFIGITALE,
-    frontLeftCure: null,
+    frontLeftCure: undefined,
 }
 const animal2: Animal = {
     ...animal1,
@@ -261,7 +263,7 @@ class Db {
 
     createSession = (session: CreateSessionInput): string => {
         // todo: return session id
-        return "";
+        return session1.sessionId;
     }
 
     updateSession = (session: UpdateSessionInput): void => {
@@ -293,7 +295,7 @@ class Db {
 
     createAnimal = (animal: CreateAnimalInput): string => {
         // todo
-        return ''
+        return 'newId'
     }
 
     updateAnimal = (animal: UpdateAnimalInput): void => {

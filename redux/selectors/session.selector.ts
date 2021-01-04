@@ -5,4 +5,6 @@ export const getSessionDetailSelector = (sessionID: string) => createSelector(
     (state: ReduxState) => state.companies.companyDetail.sessions,
     sessions => sessions.find(session => session.sessionId === sessionID)
 );
-export const sessionGroupsSelector = (state: ReduxState) => state.sessionDetail.groups;
+const sessionsSelector = (state: ReduxState) => state.sessions;
+export const sessionGroupsSelector = createSelector(sessionsSelector, sessions => sessions.groups);
+export const createSessionSelector = createSelector(sessionsSelector, sessions => sessions.creation);

@@ -4,10 +4,10 @@ import {combineReducers} from "redux";
 import {
     userPressedDeleteAnimal,
     userPressedEditAnimal,
-    userSubmittedEditedAnimal,
+    userSubmittedEditedAnimal, userSubmittedNewAnimal,
     userSubmittedNewAnimalNotes
 } from "../events";
-import {animalDeleted, animalUpdated, closeAnimalModals, openAnimalModals} from "../actions";
+import {animalCreated, animalDeleted, animalUpdated, closeAnimalModals, openAnimalModals} from "../actions";
 
 export enum AnimalsModal {
     NONE,
@@ -65,7 +65,18 @@ const editAnimalReducer = createReducer<EditAnimalStore>({}, (builder => {
     }).addCase(animalUpdated, (state, action) => ({}))
 }))
 
+interface CreateAnimalStore {
+    loading?: boolean,
+}
+
+const createAnimalReducer = createReducer<CreateAnimalStore>({}, (builder => {
+    builder.addCase(userSubmittedNewAnimal, (state, _action) => {
+        state.loading = true;
+    }).addCase(animalCreated, (_state, _action) => ({}))
+}))
+
 export const animalReducer = combineReducers({
     animalModal: animalModalReducer,
     editAnimal: editAnimalReducer,
+    createAnimal: createAnimalReducer,
 })

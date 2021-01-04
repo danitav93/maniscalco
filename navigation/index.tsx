@@ -10,6 +10,7 @@ import CompanyDetailScreen from "../screens/CompanyDetailScreen";
 import {RootStackParamList} from "../constants/Screens";
 import SessionDetailScreen from "../screens/SessionDetailScreen";
 import {EditAnimal} from "../screens/EditAnimal";
+import {CreateAnimal} from "../screens/CreateAnimal";
 
 // If you are not familiar with React Navigation, we recommend going through the
 // "Fundamentals" guide: https://reactnavigation.org/docs/getting-started
@@ -40,6 +41,7 @@ function RootNavigator() {
             <Stack.Screen name="CompanyDetails" component={CompanyDetailScreen}/>
             <Stack.Screen name="SessionDetails" component={SessionDetailScreen}/>
             <Stack.Screen name="EditAnimal" component={EditAnimal}/>
+            <Stack.Screen name="CreateAnimal" component={CreateAnimal}/>
         </Stack.Navigator>
     );
 }

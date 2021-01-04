@@ -1,7 +1,6 @@
-import {Animal, Company, Group, Session, UpdateAnimalInput} from "../../dbApi";
+import {Animal, Company, CreateAnimalInput, Group, Session, UpdateAnimalInput} from "../../dbApi";
 import {createAction} from "@reduxjs/toolkit";
 import {AnimalsModal} from "../reducers/animal.reducer";
-
 
 export enum Actions {
     filteredCompaniesLoaded = 'filteredCompaniesLoaded',
@@ -18,7 +17,8 @@ export enum Actions {
     animalDeleted = 'animalDeleted',
     closeModal = 'closeModal',
     animalUpdated = 'animalUpdated',
-
+    sessionCreated = 'sessionCreated',
+    animalCreated = 'animalCreated',
 }
 
 export const filteredCompaniesLoaded = createAction<Company[]>(Actions.filteredCompaniesLoaded);
@@ -48,3 +48,7 @@ export const animalDeleted = createAction<{ animalId: string, groupId: string }>
 export const closeModal = createAction(Actions.closeModal);
 
 export const animalUpdated = createAction<UpdateAnimalInput>(Actions.animalUpdated);
+
+export const sessionCreated = createAction(Actions.sessionCreated);
+
+export const animalCreated = createAction<{animal: Animal; groupId: string}>(Actions.animalCreated);

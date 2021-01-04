@@ -1,8 +1,14 @@
-import {Events, UserPressedDeleteAnimal, UserSubmittedEditedAnimal, UserSubmittedNewAnimalNotes} from "../events";
+import {
+    Events,
+    UserPressedDeleteAnimal,
+    UserSubmittedEditedAnimal,
+    UserSubmittedNewAnimal,
+    UserSubmittedNewAnimalNotes
+} from "../events";
 import {db} from "../../dbApi";
-import {call, delay, fork, put, select, takeLatest} from "redux-saga/effects";
+import {call, delay, fork, put, takeLatest} from "redux-saga/effects";
 import {NavigationHandler} from "../../navigation/NavigationService";
-import {animalDeleted, animalUpdated} from "../actions";
+import {animalCreated, animalDeleted, animalUpdated} from "../actions";
 
 function* deleteAnimal(event: UserPressedDeleteAnimal) {
     yield call(db.deleteAnimal, event.payload.animalId);
@@ -15,7 +21,7 @@ function* watchDeleteAnimalSaga() {
 }
 
 
-function* EditAnimal(event: UserSubmittedEditedAnimal) {
+function* editAnimal(event: UserSubmittedEditedAnimal) {
     yield call(db.updateAnimal, event.payload.newAnimal);
     yield delay(1000);
     yield put(animalUpdated(event.payload.newAnimal));
@@ -23,21 +29,35 @@ function* EditAnimal(event: UserSubmittedEditedAnimal) {
 }
 
 function* watchEditAnimalSaga() {
-    yield takeLatest(Events.userSubmittedEditedAnimal, EditAnimal);
+    yield takeLatest(Events.userSubmittedEditedAnimal, editAnimal);
 }
 
-function* EditAnimalNotes(event: UserSubmittedNewAnimalNotes) {
+function* editAnimalNotes(event: UserSubmittedNewAnimalNotes) {
     yield call(db.updateAnimal, event.payload);
     yield delay(1000);
     yield put(animalUpdated(event.payload));
 }
 
-function* watchEditAnimalNotes() {
-    yield takeLatest(Events.userSubmittedNewAnimalNotes, EditAnimalNotes);
+function* watchEditAnimalNotesSaga() {
+    yield takeLatest(Events.userSubmittedNewAnimalNotes, editAnimalNotes);
+}
+
+function* createAnimal(event: UserSubmittedNewAnimal) {
+    const animalId = (yield call(db.createAnimal, event.payload)) as string;
+    yield delay(1000);
+    const {sessionId, groupId, ...animal} = event.payload;
+    yield put(animalCreated({animal: {animalId, ...animal}, groupId}));
+    NavigationHandler.goBack();
+}
+
+
+function* watchCreateAnimalSaga() {
+    yield takeLatest(Events.userSubmittedNewAnimal, createAnimal);
 }
 
 export function* animalSaga() {
     yield fork(watchDeleteAnimalSaga);
     yield fork(watchEditAnimalSaga);
-    yield fork(watchEditAnimalNotes);
+    yield fork(watchEditAnimalNotesSaga);
+    yield fork(watchCreateAnimalSaga);
 }

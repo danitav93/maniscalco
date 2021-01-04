@@ -10,5 +10,9 @@ export type RootStackParamList = {
         sessionId: string,
         animalIId: string
     },
+    CreateAnimal: {
+        sessionId: string,
+        groupId: string,
+    }
     NotFound: undefined;
 };

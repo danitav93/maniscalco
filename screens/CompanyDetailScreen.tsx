@@ -2,8 +2,8 @@ import {FlatList, StyleSheet, TouchableOpacity, View} from 'react-native';
 import React, {FC, useCallback, useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {RouteProp, useRoute} from '@react-navigation/native';
-import {Company, CreateSessionInput, Session} from "../dbApi";
-import {loadCompanyDetails, userSubmittedNewSession} from "../redux/events";
+import {Company, Session} from "../dbApi";
+import {loadCompanyDetails} from "../redux/events";
 import {ListItem, Text} from 'react-native-elements';
 import {PageLoader} from "../components/ui/PageLoader";
 import {Email} from "../components/ui/Email";
@@ -19,7 +19,7 @@ import {CancelModalFooterButton} from "../components/ui/Modal/CancelModalFooterB
 import {SubmitModalFooterButton} from "../components/ui/Modal/SubmitModalButton";
 import {yupResolver} from "@hookform/resolvers";
 import {sessionSchema} from "../schemas/company";
-import {useCreateSessionModal} from "../hooks/useCreateSessionModal";
+import {useCreateSession} from "../hooks/useCreateSession";
 import {ModalFooter} from "../components/ui/Modal/ModalFooter";
 import {CreateSessionForm} from "../components/session/CreateSessionForm";
 import {clearCompanyDetails} from "../redux/actions";
@@ -60,22 +60,15 @@ const CompanyDetailScreen: FC = () => {
     const keyExtractor = (item: Session) => item.sessionId
 
     const {
-        isModalOpen, closeModal, openModal
-    } = useCreateSessionModal();
+        isModalOpen, closeModal, openModal, isCreatingSession, createSession
+    } = useCreateSession();
 
     const methods = useForm({
         mode: "onSubmit",
         resolver: yupResolver(sessionSchema),
     });
 
-    const createSession = useCallback((data) => {
-        const input: CreateSessionInput = {
-            companyId: company!.companyId,
-            date: data.date,
-            price: data.price,
-        }
-        dispatch(userSubmittedNewSession(input))
-    }, [dispatch, company])
+
 
 
     if (!company || !sessions) {
@@ -109,8 +102,8 @@ const CompanyDetailScreen: FC = () => {
                     </FormProvider>
                 </ModalBody>
                 <ModalFooter>
-                    <CancelModalFooterButton onClose={closeModal}/>
-                    <SubmitModalFooterButton onSubmit={methods.handleSubmit(createSession)}/>
+                    <CancelModalFooterButton onClose={closeModal} disabled={isCreatingSession}/>
+                    <SubmitModalFooterButton onSubmit={methods.handleSubmit(createSession)} loading={isCreatingSession}/>
                 </ModalFooter>
             </Modal>
         </View>

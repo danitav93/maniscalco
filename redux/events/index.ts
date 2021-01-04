@@ -1,6 +1,5 @@
-import {Animal, CreateCompanyInput, CreateSessionInput, UpdateAnimalInput} from "../../dbApi";
+import {Animal, CreateAnimalInput, CreateCompanyInput, CreateSessionInput, UpdateAnimalInput} from "../../dbApi";
 import {createAction} from "@reduxjs/toolkit";
-
 
 export enum Events {
     userChangedSearchCompanyFilter = 'userChangedSearchCompanyFilter',
@@ -13,6 +12,9 @@ export enum Events {
     userPressedEditAnimal = 'userPressedEditAnimal',
     userSubmittedEditedAnimal = 'userSubmittedEditedAnimal',
     userSubmittedNewAnimalNotes = 'userSubmittedNewAnimalNotes',
+    userPressedCreateSession = 'userPressedCreateSession',
+    userPressedClose = 'userPressedClose',
+    userSubmittedNewAnimal = 'userSubmittedNewAnimal'
 }
 
 
@@ -29,6 +31,7 @@ export const loadSessionGroups = createAction<string>(Events.loadSessionGroups);
 export type LoadSessionGroups = ReturnType<typeof loadSessionGroups>;
 
 export const userSubmittedNewSession = createAction<CreateSessionInput>(Events.userSubmittedNewSession);
+export type UserSubmittedNewSession = ReturnType<typeof userSubmittedNewSession>;
 
 export const userPressedDeleteAnimal = createAction<{ animalId: string, groupId: string }>(Events.userPressedDeleteAnimal);
 export type UserPressedDeleteAnimal = ReturnType<typeof userPressedDeleteAnimal>;
@@ -42,3 +45,10 @@ export type UserSubmittedEditedAnimal = ReturnType<typeof userSubmittedEditedAni
 
 export const userSubmittedNewAnimalNotes = createAction<UpdateAnimalInput> (Events.userSubmittedNewAnimalNotes);
 export type UserSubmittedNewAnimalNotes = ReturnType<typeof userSubmittedNewAnimalNotes>;
+
+export const userPressedCreateSession = createAction(Events.userPressedCreateSession);
+
+export const userPressedClose = createAction(Events.userPressedClose);
+
+export const userSubmittedNewAnimal = createAction<CreateAnimalInput>(Events.userSubmittedNewAnimal);
+export type UserSubmittedNewAnimal = ReturnType<typeof userSubmittedNewAnimal>;

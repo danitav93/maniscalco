@@ -7,7 +7,7 @@ import {sessionReducer} from "./session.reducer";
 const rootReducer = combineReducers({
     companies: companyReducer,
     animal: animalReducer,
-    sessionDetail: sessionReducer,
+    sessions: sessionReducer,
 });
 
 export type ReduxState = ReturnType<typeof rootReducer>
