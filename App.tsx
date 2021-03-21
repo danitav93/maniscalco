@@ -4,8 +4,10 @@ import {Provider} from "react-redux";
 import useCachedResources from './hooks/useCachedResources';
 import store from "./redux/store";
 import {ThemeProvider} from 'react-native-elements';
-import { Header } from 'react-native-elements';
 import {Navigation} from "./navigation";
+import {theme} from "./constants/Theme";
+import {AppBackground} from "./components/ui/AppBackground";
+import {StatusBar} from "react-native";
 
 
 export default function App() {
@@ -16,10 +18,12 @@ export default function App() {
         return (
             <SafeAreaProvider>
                 <Provider store={store}>
-                    <ThemeProvider>
-                        <Header
-                            centerComponent={{ text: 'Maniscalco', style: { color: '#fff' } }}
+                    <ThemeProvider theme={theme}>
+                        <StatusBar
+                            backgroundColor="black"
+                            barStyle="light-content"
                         />
+                        <AppBackground/>
                         <Navigation/>
                     </ThemeProvider>
                 </Provider>

@@ -2,7 +2,7 @@ import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import React, {FC, useCallback, useMemo, useState} from "react";
 import {Company} from "../dbApi";
 import {useDispatch, useSelector} from "react-redux";
-import {Button, Card, ListItem, withTheme} from 'react-native-elements';
+import {Button, Card, ListItem} from 'react-native-elements';
 import {Autocomplete} from "../components/ui/Autocomplete";
 import {Modal} from "../components/ui/Modal/Modal";
 import {ModalHeader} from "../components/ui/Modal/ModalHeader";
@@ -23,8 +23,7 @@ import {CreateCompanyForm} from "../components/company/CreateCompanyForm";
 import {filteredCompaniesSelector} from "../redux/selectors/company.selector";
 
 
-const CompanyListScreen: FC = () => {
-
+export const CompanyListScreen: FC = () => {
 
     const [selectedCompany, setSelectedCompany] = useState<Company | undefined>();
 
@@ -42,6 +41,7 @@ const CompanyListScreen: FC = () => {
         setQuery(item.name);
     }, []);
     const onSearchStringChanged = useCallback((value: string) => {
+        console.log(value);
         setQuery(value);
         setSelectedCompany(undefined);
         dispatch(userChangedSearchCompanyFilter(value));
@@ -82,8 +82,10 @@ const CompanyListScreen: FC = () => {
                     onChangeText={onSearchStringChanged}
                     renderItem={RenderItem}
                     value={query}
-                    placeholder={"Cerca una azienda"}
+                    placeholder={"Es: Azienda di Mario Rossi"}
                     keyExtractor={(company) => company.companyId}
+                    label={"Cerca una azienda per nome"}
+                    style={{height: 80, width: 664, alignSelf: 'center', marginTop: 50}}
                 />
                 {selectedCompany && (
                     <>
@@ -117,7 +119,7 @@ const CompanyListScreen: FC = () => {
 const styles = StyleSheet.create({
     container: {
         width: '100%',
-        height: '100%',
+        flex: 1,
         display: 'flex',
         padding: 20,
     },
@@ -132,5 +134,3 @@ const styles = StyleSheet.create({
         right: 20,
     }
 });
-
-export default withTheme(CompanyListScreen);
