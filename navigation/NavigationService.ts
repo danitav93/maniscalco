@@ -39,8 +39,8 @@ export const NavigationHandler = {
     navigateToEditCompany: (companyId: string, replace?: boolean) => {
         navigate('EditCompany', {companyId}, replace);
     },
-    navigateToSessionDetails: (sessionId: string) => {
-        navigate('SessionDetails', {sessionId});
+    navigateToSessionDetails: (sessionId: string, replace?: boolean) => {
+        navigate('SessionDetails', {sessionId}, replace);
     },
     navigateToEditAnimal: (sessionId: string, animalId: string) => {
         navigate('EditAnimal', {sessionId, animalId});

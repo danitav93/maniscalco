@@ -28,7 +28,7 @@ export const useCreateSession = () => {
     const createSession = useCallback((data: CreateSessionForm) => {
         setLoading(true);
         const sessionId = db.createSession({...data, companyId: company!.companyId});
-        NavigationHandler.navigateToSessionDetails(sessionId);
+        NavigationHandler.navigateToSessionDetails(sessionId, true);
         dispatch(sessionCreated());
         setLoading(false);
     }, [dispatch, company])
