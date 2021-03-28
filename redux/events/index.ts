@@ -8,7 +8,6 @@ export enum Events {
     loadSessionGroups = 'loadSessionGroups',
     userSubmittedNewSession = 'userSubmittedNewSession',
     userPressedDeleteAnimal = 'userPressedDeleteAnimal',
-    userPressedCreateCompany = 'userPressedCreateCompany',
     userPressedEditAnimal = 'userPressedEditAnimal',
     userSubmittedEditedAnimal = 'userSubmittedEditedAnimal',
     userSubmittedNewAnimalNotes = 'userSubmittedNewAnimalNotes',
@@ -35,8 +34,6 @@ export type UserSubmittedNewSession = ReturnType<typeof userSubmittedNewSession>
 
 export const userPressedDeleteAnimal = createAction<{ animalId: string, groupId: string }>(Events.userPressedDeleteAnimal);
 export type UserPressedDeleteAnimal = ReturnType<typeof userPressedDeleteAnimal>;
-
-export const userPressedCreateCompany = createAction(Events.userPressedCreateCompany);
 
 export const userPressedEditAnimal = createAction<{ animal: Animal, groupId: string }>(Events.userPressedEditAnimal);
 

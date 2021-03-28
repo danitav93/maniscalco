@@ -4,7 +4,7 @@ import {Company, db, Session} from "../../dbApi";
 import {CompanyNameAlreadyExistsError} from "../../errors/CompanyNameAlreadyExistsError";
 import {NavigationHandler} from "../../navigation/NavigationService";
 import {
-    closeModal,
+    closeModal, companyCreated,
     companyDetailLoaded,
     companyNameAlreadyExists,
     companySessionsLoaded,
@@ -35,8 +35,8 @@ function* watchLoadCompanyDetail() {
 function* createCompanySaga(event: UserSubmittedNewCompany) {
     try {
         const companyId = yield call(db.createCompany, event.payload);
-        yield put(closeModal());
-        NavigationHandler.navigateToCompanyDetails(companyId)
+        yield put(companyCreated());
+        NavigationHandler.navigateToCompanyDetails(companyId, true)
     } catch (error) {
         if (error instanceof CompanyNameAlreadyExistsError) {
             yield put(companyNameAlreadyExists());

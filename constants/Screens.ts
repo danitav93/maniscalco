@@ -15,4 +15,5 @@ export type RootStackParamList = {
         groupId: string,
     }
     NotFound: undefined;
+    NewCompany: undefined,
 };

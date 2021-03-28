@@ -1,5 +1,3 @@
-import {FullTheme} from "react-native-elements";
-
 export interface ManiscalcoThemeColors {
     primary: string;
     primaryLight: string;
@@ -8,7 +6,7 @@ export interface ManiscalcoThemeColors {
     inputBackground: string;
     secondary: string;
     secondaryLight: string;
-    secondaryText: string;
+    primaryText: string;
     secondaryDark: string;
     modalBackground: string;
     white: string;
@@ -24,7 +22,7 @@ const maniscalcoColors: ManiscalcoThemeColors = {
     inputBackground: "#FFFFFF",
     secondary: "#CED7DB",
     secondaryLight: "#FFFFFF",
-    secondaryText: "#000000",
+    primaryText: "#000000",
     secondaryDark: "#9DA6A9",
     modalBackground: "rgba(0, 10, 18, 0.61)",
     white: "#FFFFFF",

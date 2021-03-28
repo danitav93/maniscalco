@@ -10,7 +10,7 @@ import {Email} from "../components/ui/Email";
 import {PhoneNumber} from "../components/ui/PhoneNumber";
 import {RootStackParamList} from "../constants/Screens";
 import {NavigationHandler} from "../navigation/NavigationService";
-import {FloatingCreateButton} from "../components/ui/FloatingButton";
+import {Button} from "../components/ui/Button";
 import {Modal} from "../components/ui/Modal/Modal";
 import {ModalHeader} from "../components/ui/Modal/ModalHeader";
 import {ModalBody} from "../components/ui/Modal/ModalBody";
@@ -77,7 +77,7 @@ const CompanyDetailScreen: FC = () => {
 
 
     return (
-        <View style={styles.container}>
+        <View style={styles.TopContainer}>
             <View style={styles.resumeContainer}>
                 <Text style={styles.title}>{company.name}</Text>
                 <View>
@@ -93,7 +93,7 @@ const CompanyDetailScreen: FC = () => {
                     keyExtractor={keyExtractor}
                 />) : (<Text style={styles.emptyListTitle}>Non è stata ancora creata alcuna sessione</Text>)
             }
-            <FloatingCreateButton onPress={openModal} text={"Nuova sessione"}/>
+            <Button onPress={openModal} text={"Nuova sessione"}/>
             <Modal isOpen={isModalOpen}>
                 <ModalHeader title={"Crea una nuova sessione"}/>
                 <ModalBody>
@@ -111,7 +111,7 @@ const CompanyDetailScreen: FC = () => {
 }
 
 const styles = StyleSheet.create({
-    container: {
+    TopContainer: {
         width: '100%',
         height: '100%',
         display: 'flex',

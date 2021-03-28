@@ -7,7 +7,7 @@ export default function NotFoundScreen({
                                          navigation,
                                        }: StackScreenProps<RootStackParamList, 'NotFound'>) {
   return (
-      <View style={styles.container}>
+      <View style={styles.TopContainer}>
         <Text style={styles.title}>This screen doesn't exist.</Text>
         <TouchableOpacity onPress={() => navigation.replace('CompanyList')} style={styles.link}>
           <Text style={styles.linkText}>Go to home screen!</Text>
@@ -17,7 +17,7 @@ export default function NotFoundScreen({
 }
 
 const styles = StyleSheet.create({
-  container: {
+  TopContainer: {
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',

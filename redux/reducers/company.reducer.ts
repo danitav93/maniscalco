@@ -1,11 +1,11 @@
 import {Company, Session} from "../../dbApi";
 import {combineReducers} from "redux";
 import {createReducer} from "@reduxjs/toolkit";
-import {userPressedCreateCompany, userSubmittedNewCompany} from "../events";
+import {userSubmittedNewCompany} from "../events";
 import {
     clearCompanyDetails,
     clearErrors,
-    closeModal,
+    closeModal, companyCreated,
     companyDetailLoaded,
     companyNameAlreadyExists,
     companySessionsLoaded,
@@ -42,12 +42,11 @@ const filteredCompaniesReducer = createReducer<Company[]>([], builder => {
 
 
 interface CreateCompanyRedux {
-    isOpen?: boolean;
     isLoading?: boolean;
     error?: string;
 }
 
-const createCompanyModalReducer = createReducer<CreateCompanyRedux>({}, (builder => {
+const createCompanyReducer = createReducer<CreateCompanyRedux>({}, (builder => {
     builder.addCase(userSubmittedNewCompany, (state, action) => {
         state.isLoading = true;
     })
@@ -63,16 +62,14 @@ const createCompanyModalReducer = createReducer<CreateCompanyRedux>({}, (builder
             state.isLoading = false;
             state.error = undefined;
         })
-        .addCase(userPressedCreateCompany, (state, action) => {
-            state.isOpen = true
-        })
-        .addCase(closeModal, (state, action) => {
-            state.isOpen = false
+        .addCase(companyCreated, (state, action) => {
+            state.isLoading = false;
+            state.error = undefined;
         })
 }))
 
 export const companyReducer = combineReducers({
     filteredCompanies: filteredCompaniesReducer,
     companyDetail: companyDetailReducer,
-    createCompanyModal: createCompanyModalReducer,
+    createCompanyModal: createCompanyReducer,
 })

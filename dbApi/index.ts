@@ -121,6 +121,12 @@ const company2: Company = {
     email: 'federico@maniscalco.it',
     phoneNumber: '333 3422459',
 };
+const company3: Company = {
+    companyId: 'id3',
+    name: 'Paolo e gina mucche',
+    email: 'dfsfaf@maniscalco.it',
+    phoneNumber: '33333333333',
+};
 const session1: Session = {
     date: '24/05/2020',
     sessionId: 'id1',
@@ -253,7 +259,7 @@ class Db {
 
     getCompaniesBySearchFilter = (searchStr: string): Company[] => {
         // todo: return list by filter
-        return [company1, company2].filter(company => company.name.indexOf(searchStr) === 0);
+        return [company1, company2, company3].filter(company => company.name.indexOf(searchStr) === 0);
     }
 
     getCompanyById = (id: string): Company => {

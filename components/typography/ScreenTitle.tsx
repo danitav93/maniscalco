@@ -3,12 +3,12 @@ import {Text} from "react-native-elements";
 import {StyleSheet, TextStyle} from "react-native";
 import {useTheme} from "../../hooks/useTheme";
 
-export interface InputLabelProps {
+interface InputLabelProps {
     text: string;
     style?: TextStyle;
 }
 
-export const InputLabel = ({text, style}: InputLabelProps) => {
+export const ScreenTitle = ({text, style}: InputLabelProps) => {
 
     const theme = useTheme();
 
@@ -16,9 +16,9 @@ export const InputLabel = ({text, style}: InputLabelProps) => {
         title: {
             fontFamily: 'Roboto',
             fontStyle: 'normal',
-            fontWeight: 'normal',
-            fontSize: 24,
-            lineHeight: 33,
+            fontWeight: 'bold',
+            fontSize: 48,
+            lineHeight: 56,
             color: `${theme.colors?.primaryText}`
         },
     });

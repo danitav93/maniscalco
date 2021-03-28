@@ -14,7 +14,7 @@ const bodySections = [{title: "Anteriore Sinistra", cureName: "frontLeftCure", d
 export const AnimalForm = withTheme(({theme}) => {
 
 
-    return (<View style={styles.container}>
+    return (<View style={styles.TopContainer}>
         <UncontrolledInput
             placeholder='Etichetta'
             name="label"
@@ -31,7 +31,7 @@ export const AnimalForm = withTheme(({theme}) => {
 
 
 const styles = StyleSheet.create({
-    container: {
+    TopContainer: {
         flex: 1,
         justifyContent: "space-between",
         alignItems: "stretch",

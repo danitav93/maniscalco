@@ -6,7 +6,7 @@ export const AnimalHeader = withTheme(({theme}) => {
     const styles = getStyles(theme);
 
 
-    return (<View style={styles.container}>
+    return (<View style={styles.TopContainer}>
         <Text style={{...styles.headerLabel, flex: 1}}>
             N°
         </Text>
@@ -31,7 +31,7 @@ export const AnimalHeader = withTheme(({theme}) => {
 });
 
 const getStyles = (_theme: Partial<FullTheme>) => StyleSheet.create({
-    container: {
+    TopContainer: {
         width: '100%',
         display: "flex",
         flexDirection: "row",

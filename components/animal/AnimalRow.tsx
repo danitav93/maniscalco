@@ -19,7 +19,7 @@ export const AnimalRow = withTheme<AnimalRowProps>(({animal, groupId, theme}) =>
 
     const {navigateToEditAnimal} = useEditAnimal();
 
-    return (<View style={styles.container}>
+    return (<View style={styles.TopContainer}>
         <Text style={{...styles.rowLabel, flex: 1}}>
             {animal.label}
         </Text>
@@ -59,7 +59,7 @@ export const AnimalRow = withTheme<AnimalRowProps>(({animal, groupId, theme}) =>
 });
 
 const getStyles = (_theme: Partial<FullTheme>) => StyleSheet.create({
-    container: {
+    TopContainer: {
         width: '100%',
         display: "flex",
         flexDirection: "row",

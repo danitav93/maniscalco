@@ -2,7 +2,6 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import * as React from 'react';
 import {forwardRef} from 'react';
-
 import NotFoundScreen from '../screens/NotFoundScreen';
 import {isReadyRef, navigationRef} from "./NavigationService";
 import CompanyDetailScreen from "../screens/CompanyDetailScreen";
@@ -11,6 +10,7 @@ import SessionDetailScreen from "../screens/SessionDetailScreen";
 import {EditAnimal} from "../screens/EditAnimal";
 import {CreateAnimal} from "../screens/CreateAnimal";
 import {CompanyListScreen} from "../screens/CompanyListScreen";
+import {NewCompanyScreen} from "../screens/NewCompanyScreen";
 
 // If you are not familiar with React Navigation, we recommend going through the
 // "Fundamentals" guide: https://reactnavigation.org/docs/getting-started
@@ -33,10 +33,13 @@ export const Navigation = forwardRef((props, ref) => {
 // Read more here: https://reactnavigation.org/docs/modal
 const Stack = createStackNavigator<RootStackParamList>();
 
+
+
 function RootNavigator() {
     return (
-        <Stack.Navigator screenOptions={{headerShown: false, cardStyle: {backgroundColor: 'transparent'}}}>
+        <Stack.Navigator screenOptions={{headerShown: false}}>
             <Stack.Screen name="CompanyList" component={CompanyListScreen}/>
+            <Stack.Screen name="NewCompany" component={NewCompanyScreen}/>
             <Stack.Screen name="NotFound" component={NotFoundScreen} options={{title: 'Oops!'}}/>
             <Stack.Screen name="CompanyDetails" component={CompanyDetailScreen}/>
             <Stack.Screen name="SessionDetails" component={SessionDetailScreen}/>

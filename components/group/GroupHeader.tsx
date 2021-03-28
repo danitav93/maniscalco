@@ -11,7 +11,7 @@ interface GroupHeaderProps {
 
 export const GroupHeader = withTheme<GroupHeaderProps>(({label, numberOfAnimals, hideLeft = false, hideRight = false, theme}) => {
     const styles = getStyles(theme);
-    return (<View style={styles.container}>
+    return (<View style={styles.TopContainer}>
         <View>
             {!hideLeft && <Icon
                 name='arrow-left'
@@ -33,7 +33,7 @@ export const GroupHeader = withTheme<GroupHeaderProps>(({label, numberOfAnimals,
 });
 
 const getStyles = (theme: Partial<FullTheme>) => StyleSheet.create({
-    container: {
+    TopContainer: {
         width: '100%',
         display: 'flex',
         flexDirection: 'row',

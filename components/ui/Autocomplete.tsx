@@ -1,6 +1,6 @@
 import React, {FC} from "react";
 import {FlatList, StyleSheet, View, ViewStyle} from "react-native";
-import {TextInput} from "../typography/TextInput";
+import {TextInput} from "./TextInput";
 
 interface Props {
     value?: string;
@@ -10,11 +10,11 @@ interface Props {
     keyExtractor: (item: any) => string;
     placeholder?: string;
     label?: string;
-    style?: ViewStyle;
+    inputStyle?: ViewStyle;
 }
 
 export const Autocomplete: FC<Props> = ({
-                                            style,
+                                            inputStyle,
                                             value,
                                             data,
                                             onChangeText,
@@ -23,9 +23,7 @@ export const Autocomplete: FC<Props> = ({
                                             keyExtractor,
                                             label
                                         }) => {
-
-    return (<View style={[styles.container, style]}>
-
+    return (<View style={[styles.TopContainer]}>
         <TextInput
             label={label}
             placeholder={placeholder}
@@ -33,21 +31,21 @@ export const Autocomplete: FC<Props> = ({
             value={value}
             leftIcon={{
                 name: 'search',
-                type: 'font-awesome'
+                type: 'material'
             }}
+            style={inputStyle}
+            renderErrorMessage={false}
         />
         <FlatList
             data={data}
             renderItem={renderItem}
             keyExtractor={keyExtractor}
+
         />
     </View>)
-
-
 }
 const styles = StyleSheet.create({
-    container: {
-        width: '100%',
-        display: 'flex',
+    TopContainer: {
+        alignSelf: 'stretch',
     },
 });

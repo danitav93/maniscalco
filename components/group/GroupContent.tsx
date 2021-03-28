@@ -26,7 +26,7 @@ export const GroupContent = withTheme<GroupContentProps>(({animals,groupId, them
         <AnimalRow key={item.animalId} animal={item} groupId={groupId}/>
     );
 
-    return (<View style={styles.container}>
+    return (<View style={styles.TopContainer}>
         <AnimalHeader/>
         <FlatList
             data={animals}
@@ -38,7 +38,7 @@ export const GroupContent = withTheme<GroupContentProps>(({animals,groupId, them
 });
 
 const getStyles = (theme: Partial<FullTheme>) => StyleSheet.create({
-    container: {
+    TopContainer: {
         flex: 1,
         width: '100%',
         display: "flex",

@@ -21,7 +21,7 @@ export const CreateSessionForm = withTheme(({theme}) => {
         }
     }, [])
 
-    return (<View style={styles.container}>
+    return (<View style={styles.TopContainer}>
         <DatePicker
             style={{width: 200}}
             date={watch('date') ?? ''}
@@ -56,7 +56,7 @@ export const CreateSessionForm = withTheme(({theme}) => {
 
 
 const styles = StyleSheet.create({
-    container: {
+    TopContainer: {
         width: 500,
         display: 'flex',
         justifyContent: "space-between",

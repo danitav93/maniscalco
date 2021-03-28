@@ -1,21 +1,28 @@
 import * as React from 'react';
+import {StackActions} from '@react-navigation/native';
 
 export const navigationRef = React.createRef();
 
 export const isReadyRef = React.createRef();
 
 
-function navigate(name: string, params: object) {
+function navigate(name: string, params: object, replace?: boolean) {
     if (isReadyRef.current && navigationRef.current) {
-        navigationRef.current.navigate(name, params);
+        if (!replace) {
+            navigationRef.current?.navigate(name, params);
+        } else {
+            navigationRef.current?.dispatch(StackActions.replace(name, params));
+        }
+
     } else {
         console.error("App is not mounted yet")
     }
 }
 
+
 function goBack() {
     if (isReadyRef.current && navigationRef.current) {
-        navigationRef.current.goBack();
+        navigationRef.current?.goBack();
     } else {
         console.error("App is not mounted yet")
     }
@@ -26,8 +33,8 @@ export const NavigationHandler = {
     goBack: () => {
         goBack();
     },
-    navigateToCompanyDetails: (companyId: string) => {
-        navigate('CompanyDetails', {companyId});
+    navigateToCompanyDetails: (companyId: string, replace?: boolean) => {
+        navigate('CompanyDetails', {companyId}, replace);
     },
     navigateToSessionDetails: (sessionId: string) => {
         navigate('SessionDetails', {sessionId});
@@ -37,5 +44,8 @@ export const NavigationHandler = {
     },
     navigateToCreateAnimal: (sessionId: string, groupId: string) => {
         navigate('CreateAnimal', {sessionId, groupId});
+    },
+    navigateToNewCompany: () => {
+        navigate('NewCompany', {});
     }
 }

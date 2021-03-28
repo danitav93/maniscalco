@@ -10,7 +10,7 @@ interface Props {
 export const ModalHeader = withTheme<Props>(({title, onClose, theme}) => {
 
     return (
-        <View style={styles.container}>
+        <View style={styles.TopContainer}>
             <Text h4 h4Style={{fontSize: 15, fontWeight: "bold"}}>
                 {title}
             </Text>
@@ -28,7 +28,7 @@ export const ModalHeader = withTheme<Props>(({title, onClose, theme}) => {
 });
 
 const styles = StyleSheet.create({
-    container: {
+    TopContainer: {
         display: 'flex',
         flexDirection: 'row',
         justifyContent: "space-between",

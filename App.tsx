@@ -23,7 +23,6 @@ export default function App() {
                             backgroundColor="black"
                             barStyle="light-content"
                         />
-                        <AppBackground/>
                         <Navigation/>
                     </ThemeProvider>
                 </Provider>

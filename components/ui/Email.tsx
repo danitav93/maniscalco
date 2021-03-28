@@ -9,7 +9,7 @@ export const Email = withTheme<EmailProps>(({email, iconSize= 20, theme}) => {
     if (!email) {
         return null;
     }
-    return (<View style={styles.container}>
+    return (<View style={styles.TopContainer}>
 
         <Icon
             reverse
@@ -23,7 +23,7 @@ export const Email = withTheme<EmailProps>(({email, iconSize= 20, theme}) => {
 });
 
 const styles = StyleSheet.create({
-    container: {
+    TopContainer: {
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center'

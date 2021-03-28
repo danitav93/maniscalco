@@ -1,7 +1,8 @@
 import React, {useCallback, useEffect} from "react";
 import {useFormContext} from "react-hook-form";
-import {Icon, Input, withTheme} from "react-native-elements";
-import {View, ViewStyle} from "react-native";
+import {withTheme} from "react-native-elements";
+import {ViewStyle} from "react-native";
+import {TextInput} from "./TextInput";
 
 interface Props {
     placeholder?: string;
@@ -19,7 +20,7 @@ interface Props {
 
 export const UncontrolledInput = withTheme<Props>((props) => {
 
-    const {register, unregister, setValue, errors, watch} = useFormContext();
+    const {register, unregister, setValue, errors, watch, trigger} = useFormContext();
 
     useEffect(() => {
         register({name: props.name});
@@ -28,32 +29,25 @@ export const UncontrolledInput = withTheme<Props>((props) => {
         }
     }, [register, unregister])
 
-    const onTextChange = useCallback((event) => {
-        setValue(props.name, event.nativeEvent.text);
+    const onTextChange = useCallback((text: string) => {
+        setValue(props.name, text);
     }, [setValue])
 
     const value = watch(props.name);
 
-    return (
-        <View style={props.style ?? {width: '100%'}}>
-            <Input
-                placeholder={props.placeholder}
-                leftIcon={props.leftIcon ?
-                    <Icon
-                        name={props.leftIcon.name}
-                        size={24}
-                        color={props.theme.colors!.primary}
-                        type={props.leftIcon.type}
-                    /> : undefined
-                }
-                onChange={onTextChange}
-                errorMessage={errors[props.name]?.message}
-                keyboardType={props.numeric ? "numeric" : "default"}
-                defaultValue={value}
-                multiline={props.multiline}
-                label={props.label}
-                numberOfLines = {props.numberOfLines}
-            />
-        </View>)
+    const onBlur = useCallback(() => {
+        trigger(props.name);
+    }, [trigger, errors])
+
+    return (<TextInput onChange={onTextChange}
+                       placeholder={props.placeholder}
+                       style={props.style} value={value}
+                       label={props.label}
+                       numeric={props.numeric}
+                       numberOfLines={props.numberOfLines}
+                       leftIcon={props.leftIcon}
+                       errorMessage={errors[props.name]?.message}
+                       onBlur={onBlur}
+    />)
 
 });

@@ -1,8 +1,8 @@
 import {StyleSheet, TextStyle, View} from "react-native";
 import {Icon, Input} from "react-native-elements";
 import React, {useCallback, useMemo} from "react";
-import {InputLabel} from "./InputLabel";
 import {useTheme} from "../../hooks/useTheme";
+import {InputLabel} from "../typography/InputLabel";
 
 interface TextInputProps {
     style?: TextStyle;
@@ -19,30 +19,52 @@ interface TextInputProps {
     numeric?: boolean;
     multiline?: boolean;
     numberOfLines?: number;
+    renderErrorMessage?: boolean;
+    onBlur?: () => void;
 }
 
 export const TextInput = ({
                               style, value, onChange, label, placeholder,
-                              leftIcon, errorMessage, numeric, multiline, numberOfLines
+                              leftIcon, errorMessage, numeric, multiline, numberOfLines, renderErrorMessage,
+                              onBlur
                           }: TextInputProps) => {
 
     const theme = useTheme();
 
-    const TextInputStyle: TextStyle = useMemo(() => ({
-        fontFamily: 'Roboto',
-        fontStyle: 'normal',
-        fontWeight: 'normal',
-        fontSize: 30,
-        lineHeight: 38,
-        color: `${theme.colors?.secondaryText}`,
+
+    const styles = useMemo(() => StyleSheet.create({
+        topContainer: {
+            width: '100%',
+            display: 'flex',
+        },
+        inputContainerStyle: {
+            backgroundColor: `${theme.colors?.secondaryLight}`,
+            height: 50,
+            borderRadius: 8,
+            justifyContent: 'center',
+            paddingLeft: 25,
+            borderBottomWidth: 0
+        },
+        textInputStyle: {
+            fontFamily: 'Roboto',
+            fontStyle: 'normal',
+            fontWeight: 'normal',
+            fontSize: 24,
+            lineHeight: 28,
+            color: `${theme.colors?.primaryText}`,
+        },
+        containerStyle: {
+            paddingLeft: 0,
+            paddingRight: 0,
+        }
     }), [theme]);
 
     const onTextChange = useCallback((event) => {
         onChange(event.nativeEvent.text);
     }, [onChange])
 
-    return (<View style={[styles.container, style]}>
-        {label && <InputLabel text={label} style={{marginBottom: 20}}/>}
+    return (<View style={[styles.topContainer, style]}>
+        {label && <InputLabel text={label} style={{marginBottom: 8}}/>}
         <Input
             value={value}
             placeholder={placeholder}
@@ -55,30 +77,20 @@ export const TextInput = ({
                     style={{marginRight: 25}}
                 /> : undefined
             }
-            inputContainerStyle={{borderBottomWidth: 0}}
-            renderErrorMessage={false}
+            renderErrorMessage={renderErrorMessage}
             errorMessage={errorMessage}
             onChange={onTextChange}
             keyboardType={numeric ? "numeric" : "default"}
             defaultValue={value}
             multiline={multiline}
             numberOfLines={numberOfLines}
-            style={TextInputStyle}
+            style={styles.textInputStyle}
             placeholderTextColor={`${theme.colors?.placeholder}`}
-            containerStyle={{
-                backgroundColor: `${theme.colors?.secondaryLight}`,
-                height: 50,
-                borderRadius: 8,
-                justifyContent: 'center',
-                paddingLeft: 25
-            }}
+            inputContainerStyle={styles.inputContainerStyle}
+            containerStyle={styles.containerStyle}
+            onBlur={onBlur}
         />
     </View>)
 }
 
-const styles = StyleSheet.create({
-    container: {
-        width: '100%',
-        display: 'flex',
-    },
-});
+

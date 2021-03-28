@@ -13,7 +13,7 @@ interface CureAndIllnessColumnProps {
 
 export const CureAndDiseaseColumn = withTheme<CureAndIllnessColumnProps>(({theme, disease, cure}) => {
     const styles = getStyles(theme);
-    return (<View style={styles.container}>
+    return (<View style={styles.TopContainer}>
         <Text style={{...styles.diseaseText, flex: 1}}>
             {disease != null ? DiseaseStringMap[disease] : emptyValue}
         </Text>
@@ -24,7 +24,7 @@ export const CureAndDiseaseColumn = withTheme<CureAndIllnessColumnProps>(({theme
 });
 
 const getStyles = (theme: Partial<FullTheme>) => StyleSheet.create({
-    container: {
+    TopContainer: {
         flex: 2,
         display: 'flex',
     },

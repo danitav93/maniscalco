@@ -11,7 +11,7 @@ export const PhoneNumber = withTheme<PhoneNumberProps>(({phone, iconSize = 20, t
     if (!phone) {
         return null;
     }
-    return (<View style={styles.container}>
+    return (<View style={styles.TopContainer}>
 
         <Icon
             reverse
@@ -25,7 +25,7 @@ export const PhoneNumber = withTheme<PhoneNumberProps>(({phone, iconSize = 20, t
 });
 
 const styles = StyleSheet.create({
-    container: {
+    TopContainer: {
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center'

@@ -38,7 +38,7 @@ export const UncontrolledSelect = withTheme<SelectProps>(({
     const value = !isNullOrUndefined(watch(name)) ? items.find(item => item.value === watch(name).toString())?.value : undefined;
 
     return (
-        <View style={{...styles.container, ...style}}>
+        <View style={{...styles.TopContainer, ...style}}>
             <Text style={styles.label}>
                 {label}
             </Text>
@@ -61,7 +61,7 @@ export const UncontrolledSelect = withTheme<SelectProps>(({
 })
 
 const getStyles = (theme: Partial<FullTheme>) => StyleSheet.create({
-    container: {
+    TopContainer: {
         display: 'flex',
         flex: 1
     },

@@ -14,7 +14,7 @@ import {GroupContent} from "../components/group/GroupContent";
 import {getSessionDetailSelector, sessionGroupsSelector} from "../redux/selectors/session.selector";
 import {clearSessionGroups} from "../redux/actions";
 import {companyDetailSelector} from "../redux/selectors/company.selector";
-import {FloatingCreateButton} from "../components/ui/FloatingButton";
+import {Button} from "../components/ui/Button";
 import {useCreateAnimal} from "../hooks/useCreateAnimal";
 
 const SessionDetailScreen = () => {
@@ -51,7 +51,7 @@ const SessionDetailScreen = () => {
         return <PageLoader/>;
     }
     return (
-        <View style={styles.container}>
+        <View style={styles.TopContainer}>
             <View style={styles.resumeContainer}>
                 <Text style={styles.title}>Sessione del {session.date}</Text>
                 <Text style={styles.price}>Prezzo {session.price} {'\u20AC'}</Text>
@@ -66,13 +66,13 @@ const SessionDetailScreen = () => {
                     </View>
                 ))}
             </ViewPager>
-            <FloatingCreateButton onPress={navigateToCreateAnimal(groups[groupSelected].groupId)} text={"Aggiungi un animale"}/>
+            <Button onPress={navigateToCreateAnimal(groups[groupSelected].groupId)} text={"Aggiungi un animale"}/>
         </View>
     );
 }
 
 const styles = StyleSheet.create({
-    container: {
+    TopContainer: {
         width: '100%',
         height: '100%',
         display: 'flex',
