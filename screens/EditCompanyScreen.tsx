@@ -1,26 +1,27 @@
 import React from "react";
 import {withTheme} from "react-native-elements";
-import {useCreateCompany} from "../hooks/useCreateCompany";
 import {FormProvider} from "react-hook-form";
 import {StyleSheet, View} from "react-native";
 import {AppBackground} from "../components/ui/AppBackground";
 import {Button} from "../components/ui/Button";
-import {ScreenTitle} from "../components/ui/typography/ScreenTitle";
+import {useEditCompany} from "../hooks/useEditCompany";
 import {UncontrolledInput} from "../components/ui/input/UncontrolledInput";
+import {ScreenTitle} from "../components/ui/typography/ScreenTitle";
 import {ErrorMessage} from "../components/ui/typography/ErrorMessage";
 
 
-export const NewCompanyScreen = withTheme(({theme}) => {
+export const EditCompanyScreen = withTheme(({theme}) => {
     const {
-        createCompany, loading, error, methods
-    } = useCreateCompany();
+        editCompany, loading, error, methods
+    } = useEditCompany();
+
 
     return (
         <>
             <AppBackground/>
             <View style={styles.MainContainer}>
                 <View style={styles.TopContainer}>
-                    <ScreenTitle text={"Crea una nuova azienda"}/>
+                    <ScreenTitle text={"Aggiorna i dati aziendali"}/>
                     <FormProvider {...methods}>
                         <UncontrolledInput
                             placeholder='Es: Azienda Agricola La Collina'
@@ -56,8 +57,8 @@ export const NewCompanyScreen = withTheme(({theme}) => {
                     </FormProvider>
                     {error && <ErrorMessage text={error} style={styles.errorMessageStyle}/>}
                 </View>
-                <Button onPress={createCompany}
-                        text={"Crea azienda"}
+                <Button onPress={editCompany}
+                        text={"Salva"}
                         isLoading={loading}
                 />
             </View>

@@ -8,3 +8,4 @@ export const getSessionDetailSelector = (sessionID: string) => createSelector(
 const sessionsSelector = (state: ReduxState) => state.sessions;
 export const sessionGroupsSelector = createSelector(sessionsSelector, sessions => sessions.groups);
 export const createSessionSelector = createSelector(sessionsSelector, sessions => sessions.creation);
+export const deleteSessionModalStateSelector = createSelector(sessionsSelector, sessions => sessions.deleteModal);

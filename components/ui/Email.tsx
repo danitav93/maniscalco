@@ -1,24 +1,26 @@
 import React from "react";
-import {Icon, Text, withTheme} from "react-native-elements";
+import {Icon, withTheme} from "react-native-elements";
 import {StyleSheet, View} from "react-native";
+import {ScreenTitleSubInfo} from "./typography/ScreenTitleSubInfos";
+
 interface EmailProps {
     email?: string;
     iconSize?: number
 }
-export const Email = withTheme<EmailProps>(({email, iconSize= 20, theme}) => {
+
+export const Email = withTheme<EmailProps>(({email, iconSize = 20, theme}) => {
     if (!email) {
         return null;
     }
     return (<View style={styles.TopContainer}>
 
         <Icon
-            reverse
             name='envelope'
             type='font-awesome'
             color={theme.colors!.primary}
             size={iconSize}
         />
-        <Text>{email}</Text>
+        <ScreenTitleSubInfo text={email} style={{marginLeft: 10}}/>
     </View>);
 });
 

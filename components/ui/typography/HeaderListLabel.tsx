@@ -1,14 +1,14 @@
 import React from 'react';
 import {Text} from "react-native-elements";
 import {StyleSheet, TextStyle} from "react-native";
-import {useTheme} from "../../hooks/useTheme";
+import {useTheme} from "../../../hooks/useTheme";
 
-export interface InputLabelProps {
+export interface HeaderListLabelProps {
     text: string;
     style?: TextStyle;
 }
 
-export const InputLabel = ({text, style}: InputLabelProps) => {
+export const HeaderListLabel = ({text, style}: HeaderListLabelProps) => {
 
     const theme = useTheme();
 
@@ -17,8 +17,8 @@ export const InputLabel = ({text, style}: InputLabelProps) => {
             fontFamily: 'Roboto',
             fontStyle: 'normal',
             fontWeight: 'normal',
-            fontSize: 24,
-            lineHeight: 33,
+            fontSize: 22,
+            lineHeight: 24,
             color: `${theme.colors?.primaryText}`
         },
     });

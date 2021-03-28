@@ -2,7 +2,7 @@ import React from "react";
 import {Text, withTheme} from "react-native-elements";
 import {FormProvider, useForm} from "react-hook-form";
 import {yupResolver} from "@hookform/resolvers";
-import {animalSchema} from "../schemas/company";
+import {animalSchema} from "../schemas/schema";
 import {AnimalForm as AnimalFormComponent} from "../components/animal/AnimalForm/AnimalForm";
 import {ModalFooter} from "../components/ui/Modal/ModalFooter";
 import {CancelModalFooterButton} from "../components/ui/Modal/CancelModalFooterButton";

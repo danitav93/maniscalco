@@ -1,8 +1,8 @@
 import React from 'react'
 import {Text, withTheme} from "react-native-elements";
 import {StyleSheet, View} from "react-native";
-import {UncontrolledSelect} from "../../ui/UncontrolledSelect";
 import {cureItems, diseaseItems} from "../../../utils/selectItems";
+import {UncontrolledSelect} from "../../ui/input/UncontrolledSelect";
 
 interface BodySectionProps {
     title: string;

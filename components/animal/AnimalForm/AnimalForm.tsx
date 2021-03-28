@@ -1,9 +1,9 @@
 import React from "react";
 import {StyleSheet, View} from "react-native";
 import {withTheme} from 'react-native-elements';
-import {UncontrolledInput} from "../../ui/UncontrolledInput";
 import {BodySection} from "./BodySection";
 import ViewPager from "@react-native-community/viewpager";
+import {UncontrolledInput} from "../../ui/input/UncontrolledInput";
 
 const bodySections = [{title: "Anteriore Sinistra", cureName: "frontLeftCure", diseaseName: "frontLeftDisease"},
     {title: "Anteriore Destra", cureName: "frontRightCure", diseaseName: "frontRightDisease"},

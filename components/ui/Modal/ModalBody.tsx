@@ -8,14 +8,8 @@ interface ModalBodyProps {
 export const ModalBody: FC<ModalBodyProps> = ({style = {}, children}) => {
 
     return (
-        <View style={{...styles.TopContainer,...style}}>
+        <View style={style}>
             {children}
         </View>);
 
 }
-
-const styles = StyleSheet.create({
-    TopContainer: {
-        display: 'flex',
-    },
-});

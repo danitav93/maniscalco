@@ -1,6 +1,9 @@
 import * as yup from 'yup';
 import "yup-phone";
 
+const dateRegex = /^(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}$/;
+
+
 yup.setLocale({
     mixed: {
         required: 'Campo obbligatorio',
@@ -17,12 +20,10 @@ export const companySchema = yup.object().shape({
 });
 
 export const sessionSchema = yup.object().shape({
-    date: yup.string().required(),
+    date: yup.string().required().matches(dateRegex, "Formato non corretto"),
     price: yup.number().required().typeError('Numero non valido'),
 });
 
 export const animalSchema = yup.object().shape({
     label: yup.string().required(),
 })
-
-export type AnimalSchemaType = yup.InferType<typeof animalSchema>;

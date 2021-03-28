@@ -3,6 +3,9 @@ export type RootStackParamList = {
     CompanyDetails: {
         companyId: string
     };
+    EditCompany: {
+        companyId: string
+    };
     SessionDetails: {
         sessionId: string
     };
@@ -16,4 +19,5 @@ export type RootStackParamList = {
     }
     NotFound: undefined;
     NewCompany: undefined,
+    NewSession: undefined,
 };

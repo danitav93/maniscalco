@@ -1,16 +1,11 @@
 import {Company, Session} from "../../dbApi";
 import {combineReducers} from "redux";
 import {createReducer} from "@reduxjs/toolkit";
-import {userSubmittedNewCompany} from "../events";
 import {
     clearCompanyDetails,
-    clearErrors,
-    closeModal, companyCreated,
     companyDetailLoaded,
-    companyNameAlreadyExists,
-    companySessionsLoaded,
-    filteredCompaniesLoaded,
-    genericError
+    companySessionsLoaded, companyUpdated,
+    filteredCompaniesLoaded, sessionDeleted,
 } from "../actions";
 
 export interface CompanyDetail {
@@ -32,6 +27,12 @@ const companyDetailReducer = createReducer<CompanyDetail>(initialCompanyDetailSt
         .addCase(companySessionsLoaded, (state, action) => {
             state.sessions = action.payload
         })
+        .addCase(companyUpdated, (state, action) => {
+            state.company = action.payload
+        })
+        .addCase(sessionDeleted, (state, action) => {
+            state.sessions = state.sessions.filter(session => session.sessionId !== action.payload.sessionId)
+        })
 })
 
 const filteredCompaniesReducer = createReducer<Company[]>([], builder => {
@@ -41,35 +42,7 @@ const filteredCompaniesReducer = createReducer<Company[]>([], builder => {
 });
 
 
-interface CreateCompanyRedux {
-    isLoading?: boolean;
-    error?: string;
-}
-
-const createCompanyReducer = createReducer<CreateCompanyRedux>({}, (builder => {
-    builder.addCase(userSubmittedNewCompany, (state, action) => {
-        state.isLoading = true;
-    })
-        .addCase(companyNameAlreadyExists, (state, action) => {
-            state.isLoading = false;
-            state.error = "Nome dell'azienda non disponibile";
-        })
-        .addCase(genericError, (state, action) => {
-            state.isLoading = false;
-            state.error = "Si è verificato un errore imprevisto";
-        })
-        .addCase(clearErrors, (state, action) => {
-            state.isLoading = false;
-            state.error = undefined;
-        })
-        .addCase(companyCreated, (state, action) => {
-            state.isLoading = false;
-            state.error = undefined;
-        })
-}))
-
 export const companyReducer = combineReducers({
     filteredCompanies: filteredCompaniesReducer,
     companyDetail: companyDetailReducer,
-    createCompanyModal: createCompanyReducer,
 })

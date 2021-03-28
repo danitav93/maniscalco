@@ -7,7 +7,7 @@ import {FormProvider, useForm} from "react-hook-form";
 import {ModalFooter} from "../../ui/Modal/ModalFooter";
 import {CancelModalFooterButton} from "../../ui/Modal/CancelModalFooterButton";
 import {SubmitModalFooterButton} from "../../ui/Modal/SubmitModalButton";
-import {UncontrolledInput} from "../../ui/UncontrolledInput";
+import {UncontrolledInput} from "../../ui/input/UncontrolledInput";
 
 const Component = () => {
     const {animal, closeModal, loading, editNotes} = useAnimalModals();

@@ -27,7 +27,7 @@ export interface Company {
     companyId: string;
     name: string;
     email?: string;
-    phoneNumber?: string;
+    phone?: string;
 }
 
 export interface SessionItem {
@@ -39,6 +39,7 @@ export interface Session {
     sessionId: string;
     date: string;
     price: string;
+    animalNumber: number;
 }
 
 export interface CreateGroupInput {
@@ -113,34 +114,38 @@ const company1: Company = {
     companyId: 'id1',
     name: 'Paolo e gina vacche',
     email: 'azionda@maniscalco.it',
-    phoneNumber: '3278788372',
+    phone: '3278788372',
 };
 const company2: Company = {
     companyId: 'id2',
     name: 'Federico pavoni',
     email: 'federico@maniscalco.it',
-    phoneNumber: '333 3422459',
+    phone: '333 3422459',
 };
 const company3: Company = {
     companyId: 'id3',
     name: 'Paolo e gina mucche',
     email: 'dfsfaf@maniscalco.it',
-    phoneNumber: '33333333333',
+    phone: '33333333333',
 };
 const session1: Session = {
     date: '24/05/2020',
     sessionId: 'id1',
-    price: '34'
+    price: '34',
+    animalNumber: 4,
 }
 const session2: Session = {
     date: '12/09/2020',
     sessionId: 'id2',
-    price: '33'
+    price: '33',
+    animalNumber: 114,
+
 }
 const session3: Session = {
     date: '01/12/2021',
     sessionId: 'id3',
-    price: '32'
+    price: '32',
+    animalNumber: 43,
 }
 
 const animal1: Animal = {
@@ -287,6 +292,7 @@ class Db {
             date: '',
             price: '',
             sessionId: '',
+            animalNumber: 0,
         }
     }
 
@@ -311,6 +317,11 @@ class Db {
 
     deleteAnimal = (animalId: string): void => {
         //todo
+        return;
+    }
+
+    deleteSession = (sessionId: string): void => {
+        // todo
         return;
     }
 

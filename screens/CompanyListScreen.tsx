@@ -2,13 +2,13 @@ import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React, {useCallback, useMemo, useState} from "react";
 import {Company} from "../dbApi";
 import {useDispatch, useSelector} from "react-redux";
-import {Autocomplete} from "../components/ui/Autocomplete";
 import {userChangedSearchCompanyFilter} from "../redux/events";
 import {NavigationHandler} from "../navigation/NavigationService";
 import {Button} from "../components/ui/Button";
 import {filteredCompaniesSelector} from "../redux/selectors/company.selector";
 import {withTheme} from "react-native-elements";
 import {AppBackground} from "../components/ui/AppBackground";
+import {Autocomplete} from "../components/ui/input/Autocomplete";
 
 
 const onNewCompanyClick = () => {
@@ -39,7 +39,7 @@ export const CompanyListScreen = withTheme(({theme}) => {
         <TouchableOpacity onPress={goToCompanyDetail(item.companyId)} key={item.companyId}
                           style={styles.companyItemStyle}>
             <Text style={{fontSize: 20}}>{item.name}</Text>
-            <Text style={{color: theme.colors?.placeholder}}>{item.email} {item.phoneNumber}</Text>
+            <Text style={{color: theme.colors?.placeholder}}>{item.email} {item.phone}</Text>
         </TouchableOpacity>
     ), [goToCompanyDetail])
 

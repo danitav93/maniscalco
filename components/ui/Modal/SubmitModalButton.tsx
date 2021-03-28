@@ -1,25 +1,41 @@
 import React from "react";
 import {Button} from "react-native-elements";
+import {StyleSheet} from "react-native";
+import {useTheme} from "../../../hooks/useTheme";
 
 interface Props {
     onSubmit: () => void;
     title?: string;
     color?: string;
     loading?: boolean;
+    disabled?: boolean
 }
 
-export const SubmitModalFooterButton= ({title = "Crea", color, onSubmit, loading}: Props) => {
+export const SubmitModalFooterButton = ({title = "Crea", color, onSubmit, loading, disabled}: Props) => {
 
-    return (
-        <Button
-            title={title}
-            titleStyle={{fontSize: 16}}
-            containerStyle={{width: 100}}
-            buttonStyle={color ? {
-                backgroundColor: "red"
-            }: {}}
-            onPress={onSubmit}
-            loading={loading}
-        />)
+    const theme = useTheme();
+
+    const styles = StyleSheet.create({
+        buttonStyle: {
+            color: color ?? theme.colors?.primary,
+            width: 230,
+            height: 50,
+            borderRadius: 8,
+        },
+        containerStyle: {
+
+        }
+    });
+
+
+    return (<Button
+        title={title}
+        onPress={onSubmit}
+        buttonStyle={[styles.buttonStyle, {backgroundColor: color ?? theme.colors?.primary}]}
+        raised
+        containerStyle={styles.containerStyle}
+        loading={loading}
+        disabled={disabled}
+    />)
 };
 

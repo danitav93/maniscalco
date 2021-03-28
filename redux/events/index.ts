@@ -1,19 +1,19 @@
-import {Animal, CreateAnimalInput, CreateCompanyInput, CreateSessionInput, UpdateAnimalInput} from "../../dbApi";
+import {Animal, CreateAnimalInput, UpdateAnimalInput} from "../../dbApi";
 import {createAction} from "@reduxjs/toolkit";
 
 export enum Events {
     userChangedSearchCompanyFilter = 'userChangedSearchCompanyFilter',
     loadCompanyDetails = 'loadCompanyDetails',
-    userSubmittedNewCompany = 'userSubmittedNewCompany',
     loadSessionGroups = 'loadSessionGroups',
-    userSubmittedNewSession = 'userSubmittedNewSession',
     userPressedDeleteAnimal = 'userPressedDeleteAnimal',
     userPressedEditAnimal = 'userPressedEditAnimal',
     userSubmittedEditedAnimal = 'userSubmittedEditedAnimal',
     userSubmittedNewAnimalNotes = 'userSubmittedNewAnimalNotes',
     userPressedCreateSession = 'userPressedCreateSession',
     userPressedClose = 'userPressedClose',
-    userSubmittedNewAnimal = 'userSubmittedNewAnimal'
+    userSubmittedNewAnimal = 'userSubmittedNewAnimal',
+    userPressedDeleteSession = 'userPressedDeleteSession',
+    closeModal = 'closeModal',
 }
 
 
@@ -23,14 +23,8 @@ export type UserChangedSearchCompanyFilter = ReturnType<typeof userChangedSearch
 export const loadCompanyDetails = createAction<string>(Events.loadCompanyDetails);
 export type LoadCompanyDetails = ReturnType<typeof loadCompanyDetails>;
 
-export const userSubmittedNewCompany = createAction<CreateCompanyInput>(Events.userSubmittedNewCompany);
-export type UserSubmittedNewCompany = ReturnType<typeof userSubmittedNewCompany>;
-
 export const loadSessionGroups = createAction<string>(Events.loadSessionGroups);
 export type LoadSessionGroups = ReturnType<typeof loadSessionGroups>;
-
-export const userSubmittedNewSession = createAction<CreateSessionInput>(Events.userSubmittedNewSession);
-export type UserSubmittedNewSession = ReturnType<typeof userSubmittedNewSession>;
 
 export const userPressedDeleteAnimal = createAction<{ animalId: string, groupId: string }>(Events.userPressedDeleteAnimal);
 export type UserPressedDeleteAnimal = ReturnType<typeof userPressedDeleteAnimal>;
@@ -49,3 +43,6 @@ export const userPressedClose = createAction(Events.userPressedClose);
 
 export const userSubmittedNewAnimal = createAction<CreateAnimalInput>(Events.userSubmittedNewAnimal);
 export type UserSubmittedNewAnimal = ReturnType<typeof userSubmittedNewAnimal>;
+
+export const userPressedDeleteSession = createAction<{sessionId: string}>(Events.userPressedDeleteSession);
+export const closeModal = createAction(Events.closeModal);

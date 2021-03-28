@@ -1,14 +1,14 @@
 import React from 'react';
 import {Text} from "react-native-elements";
 import {StyleSheet, TextStyle} from "react-native";
-import {useTheme} from "../../hooks/useTheme";
+import {useTheme} from "../../../hooks/useTheme";
 
-interface InputLabelProps {
+export interface DataRowLabelProps {
     text: string;
     style?: TextStyle;
 }
 
-export const ScreenTitle = ({text, style}: InputLabelProps) => {
+export const DataRowLabel = ({text, style}: DataRowLabelProps) => {
 
     const theme = useTheme();
 
@@ -16,9 +16,9 @@ export const ScreenTitle = ({text, style}: InputLabelProps) => {
         title: {
             fontFamily: 'Roboto',
             fontStyle: 'normal',
-            fontWeight: 'bold',
-            fontSize: 48,
-            lineHeight: 56,
+            fontWeight: 'normal',
+            fontSize: 20,
+            lineHeight: 22,
             color: `${theme.colors?.primaryText}`
         },
     });

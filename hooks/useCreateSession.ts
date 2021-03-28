@@ -1,37 +1,42 @@
 import {useDispatch, useSelector} from "react-redux";
-import {createSessionSelector} from "../redux/selectors/session.selector";
-import {useCallback} from "react";
-import {
-    userPressedClose,
-    userPressedCreateSession,
-    userSubmittedNewSession
-} from "../redux/events";
-import {Company, CreateSessionInput} from "../dbApi";
+import {useCallback, useState} from "react";
+import {db} from "../dbApi";
+import {useForm} from "react-hook-form";
+import {yupResolver} from "@hookform/resolvers";
+import {sessionSchema} from "../schemas/schema";
+import {sessionCreated} from "../redux/actions";
+import {NavigationHandler} from "../navigation/NavigationService";
 import {companyDetailSelector} from "../redux/selectors/company.selector";
 
+interface CreateSessionForm {
+    date: string,
+    price: number,
+}
+
 export const useCreateSession = () => {
-    const {isCreatingSession, isModalOpen} = useSelector(createSessionSelector);
     const dispatch = useDispatch();
-    const openModal = useCallback(()=>{
-        dispatch(userPressedCreateSession());
-    },[dispatch]);
-    const closeModal = () => useCallback(()=>{
-        dispatch(userPressedClose());
-    },[dispatch]);
-    const company: Company | undefined = useSelector(companyDetailSelector);
-    const createSession = useCallback((data) => {
-        const input: CreateSessionInput = {
-            companyId: company!.companyId,
-            date: data.date,
-            price: data.price,
-        }
-        dispatch(userSubmittedNewSession(input))
+
+    const [loading, setLoading] = useState(false);
+
+    const methods = useForm<CreateSessionForm>({
+        mode: "onSubmit",
+        resolver: yupResolver(sessionSchema),
+    });
+
+    const company = useSelector(companyDetailSelector);
+
+    const createSession = useCallback((data: CreateSessionForm) => {
+        setLoading(true);
+        const sessionId = db.createSession({...data, companyId: company!.companyId});
+        NavigationHandler.navigateToSessionDetails(sessionId);
+        dispatch(sessionCreated());
+        setLoading(false);
     }, [dispatch, company])
+
+
     return {
-        isModalOpen,
-        openModal,
-        closeModal,
-        isCreatingSession,
-        createSession
+        loading,
+        createCompany: methods.handleSubmit(createSession),
+        methods,
     }
 }

@@ -11,6 +11,8 @@ import {EditAnimal} from "../screens/EditAnimal";
 import {CreateAnimal} from "../screens/CreateAnimal";
 import {CompanyListScreen} from "../screens/CompanyListScreen";
 import {NewCompanyScreen} from "../screens/NewCompanyScreen";
+import {EditCompanyScreen} from "../screens/EditCompanyScreen";
+import {NewSessionScreen} from "../screens/NewSessionScreen";
 
 // If you are not familiar with React Navigation, we recommend going through the
 // "Fundamentals" guide: https://reactnavigation.org/docs/getting-started
@@ -40,9 +42,11 @@ function RootNavigator() {
         <Stack.Navigator screenOptions={{headerShown: false}}>
             <Stack.Screen name="CompanyList" component={CompanyListScreen}/>
             <Stack.Screen name="NewCompany" component={NewCompanyScreen}/>
+            <Stack.Screen name="EditCompany" component={EditCompanyScreen}/>
             <Stack.Screen name="NotFound" component={NotFoundScreen} options={{title: 'Oops!'}}/>
             <Stack.Screen name="CompanyDetails" component={CompanyDetailScreen}/>
             <Stack.Screen name="SessionDetails" component={SessionDetailScreen}/>
+            <Stack.Screen name="NewSession" component={NewSessionScreen}/>
             <Stack.Screen name="EditAnimal" component={EditAnimal}/>
             <Stack.Screen name="CreateAnimal" component={CreateAnimal}/>
         </Stack.Navigator>

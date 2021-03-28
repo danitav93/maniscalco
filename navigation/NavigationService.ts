@@ -36,6 +36,9 @@ export const NavigationHandler = {
     navigateToCompanyDetails: (companyId: string, replace?: boolean) => {
         navigate('CompanyDetails', {companyId}, replace);
     },
+    navigateToEditCompany: (companyId: string, replace?: boolean) => {
+        navigate('EditCompany', {companyId}, replace);
+    },
     navigateToSessionDetails: (sessionId: string) => {
         navigate('SessionDetails', {sessionId});
     },
@@ -47,5 +50,8 @@ export const NavigationHandler = {
     },
     navigateToNewCompany: () => {
         navigate('NewCompany', {});
+    },
+    navigateToNewSession: () => {
+        navigate('NewSession', {});
     }
 }

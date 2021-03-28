@@ -1,8 +1,8 @@
 import {StyleSheet, TextStyle, View} from "react-native";
 import {Icon, Input} from "react-native-elements";
 import React, {useCallback, useMemo} from "react";
-import {useTheme} from "../../hooks/useTheme";
 import {InputLabel} from "../typography/InputLabel";
+import {useTheme} from "../../../hooks/useTheme";
 
 interface TextInputProps {
     style?: TextStyle;

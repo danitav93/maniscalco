@@ -5,5 +5,3 @@ export const filteredCompaniesSelector = (state: ReduxState) => state.companies.
 export const companyDetailSelector = (state: ReduxState) => state.companies.companyDetail.company;
 
 export const companySessionsSelector = (state: ReduxState) => state.companies.companyDetail.sessions;
-
-export const companyModalSelector = (state: ReduxState) => state.companies.createCompanyModal;

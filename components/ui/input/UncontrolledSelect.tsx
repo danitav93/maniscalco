@@ -3,7 +3,7 @@ import {FullTheme, Text, withTheme} from "react-native-elements";
 import DropDownPicker from "react-native-dropdown-picker";
 import {useFormContext} from "react-hook-form";
 import {StyleSheet, View, ViewStyle} from "react-native";
-import {isNullOrUndefined} from "../../utils/isNullOrUndefined";
+import {isNullOrUndefined} from "../../../utils/isNullOrUndefined";
 
 
 interface SelectProps {
